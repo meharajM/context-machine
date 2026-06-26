@@ -1,0 +1,13 @@
+{
+  "root": "~/.contextengine",
+  "sync": {
+    "mode": "none",
+    "repo": "git@github.com:you/context.git",
+    "branch": "main",
+    "autoPush": false,
+    "gdriveFolderId": "",
+    "gdriveCredentials": "~/.contextengine/.gdrive-credentials.json"
+  },
+  "storage": { "mode": "global" },
+  "patches": { "expiryDays": 30 }
+}
