@@ -1,0 +1,42 @@
+{
+  "name": "@mhrj/contextengine-mcp",
+  "version": "0.1.0",
+  "description": "Local-first context layer for AI agents via MCP",
+  "type": "module",
+  "main": "build/index.js",
+  "bin": {
+    "contextengine-mcp": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node build/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "mcp",
+    "context",
+    "ai-agents",
+    "memory",
+    "local-first"
+  ],
+  "author": "mhrj",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "diff": "^9.0.0",
+    "proper-lockfile": "^4.1.2",
+    "gray-matter": "^4.0.3",
+    "zod": "^4.3.6",
+    "googleapis": "^148.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^3.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}
