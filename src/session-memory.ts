@@ -70,43 +70,27 @@ export async function writeLoopMemory(
   sessionId: string,
   memory: LoopMemory,
 ): Promise<void> {
-  const filePath = getSessionFilePath(config, sessionId);
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
+  await withLockedSessionFile(config, sessionId, async (filePath) => {
+    await writeLoopMemoryFile(filePath, memory);
+  });
+}
 
-  try {
-    await fs.access(filePath);
-  } catch {
-    await fs.writeFile(filePath, '', 'utf-8');
-  }
+export async function updateLoopMemory<T>(
+  config: Config,
+  sessionId: string,
+  updater: (
+    current: LoopMemory | null,
+  ) => Promise<{ memory?: LoopMemory; result: T }> | { memory?: LoopMemory; result: T },
+): Promise<T> {
+  return withLockedSessionFile(config, sessionId, async (filePath) => {
+    const current = await readLoopMemoryFile(filePath);
+    const update = await updater(current);
+    if (update.memory) {
+      await writeLoopMemoryFile(filePath, update.memory);
+    }
 
-  const release = await lockfile.lock(filePath, { retries: 5 });
-  try {
-    const state: AgentState = {
-      ...memory.state,
-      last_updated: new Date().toISOString(),
-    };
-
-    const markdownContent = `
-# Objective
-${memory.objective}
-
-# System Instructions (Read Only)
-${memory.system_instructions}
-
-# Active Context (Detailed)
-${memory.active_context}
-
-# Compacted History (Summarized)
-${memory.compacted_history}
-`.trim();
-
-    const fileContent = matter.stringify(markdownContent, state);
-    const tempPath = `${filePath}.tmp.${Date.now()}`;
-    await fs.writeFile(tempPath, fileContent, 'utf-8');
-    await fs.rename(tempPath, filePath);
-  } finally {
-    await release();
-  }
+    return update.result;
+  });
 }
 
 export async function readLoopMarkdown(
@@ -146,4 +130,73 @@ function escapeRegExp(value: string): string {
 
 function isErrno(error: unknown, code: string): error is NodeJS.ErrnoException {
   return typeof error === 'object' && error !== null && 'code' in error && error.code === code;
+}
+
+async function withLockedSessionFile<T>(
+  config: Config,
+  sessionId: string,
+  handler: (filePath: string) => Promise<T>,
+): Promise<T> {
+  const filePath = getSessionFilePath(config, sessionId);
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+
+  try {
+    await fs.access(filePath);
+  } catch {
+    await fs.writeFile(filePath, '', 'utf-8');
+  }
+
+  const release = await lockfile.lock(filePath, { retries: 5 });
+  try {
+    return await handler(filePath);
+  } finally {
+    await release();
+  }
+}
+
+async function readLoopMemoryFile(filePath: string): Promise<LoopMemory | null> {
+  const rawContent = await fs.readFile(filePath, 'utf-8');
+  if (!rawContent.trim()) {
+    return null;
+  }
+
+  const { data, content } = matter(rawContent);
+  const state = AgentStateSchema.parse(data);
+
+  return {
+    state,
+    objective: extractSection(content, '# Objective'),
+    system_instructions: extractSection(content, '# System Instructions (Read Only)'),
+    active_context: extractSection(content, '# Active Context (Detailed)'),
+    compacted_history: extractSection(content, '# Compacted History (Summarized)'),
+  };
+}
+
+async function writeLoopMemoryFile(
+  filePath: string,
+  memory: LoopMemory,
+): Promise<void> {
+  const state: AgentState = {
+    ...memory.state,
+    last_updated: new Date().toISOString(),
+  };
+
+  const markdownContent = `
+# Objective
+${memory.objective}
+
+# System Instructions (Read Only)
+${memory.system_instructions}
+
+# Active Context (Detailed)
+${memory.active_context}
+
+# Compacted History (Summarized)
+${memory.compacted_history}
+`.trim();
+
+  const fileContent = matter.stringify(markdownContent, state);
+  const tempPath = `${filePath}.tmp.${Date.now()}`;
+  await fs.writeFile(tempPath, fileContent, 'utf-8');
+  await fs.rename(tempPath, filePath);
 }

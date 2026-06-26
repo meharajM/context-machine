@@ -49,41 +49,27 @@ export async function writeContext(
   project: string,
   memory: ContextMemory,
 ): Promise<void> {
-  const filePath = getContextFilePath(config, project);
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
+  await withLockedContextFile(config, project, async (filePath) => {
+    await writeContextFile(filePath, memory);
+  });
+}
 
-  try {
-    await fs.access(filePath);
-  } catch {
-    await fs.writeFile(filePath, '', 'utf-8');
-  }
-
-  const release = await lockfile.lock(filePath, { retries: 5 });
-
-  try {
-    const nextState: ContextState = {
-      ...memory.state,
-      updated: new Date().toISOString(),
-      version: (memory.state.version ?? 0) + 1,
-    };
-
-    const backupPath = `${filePath}.bak`;
-    try {
-      const stats = await fs.stat(filePath);
-      if (stats.size > 0) {
-        await fs.copyFile(filePath, backupPath);
-      }
-    } catch {
-      // No previous file content to back up on the first write.
+export async function updateContext<T>(
+  config: Config,
+  project: string,
+  updater: (
+    current: ContextMemory | null,
+  ) => Promise<{ memory?: ContextMemory; result: T }> | { memory?: ContextMemory; result: T },
+): Promise<T> {
+  return withLockedContextFile(config, project, async (filePath) => {
+    const current = await readContextFile(filePath);
+    const update = await updater(current);
+    if (update.memory) {
+      await writeContextFile(filePath, update.memory);
     }
 
-    const nextContent = matter.stringify(memory.content, nextState);
-    const tmpPath = `${filePath}.tmp.${Date.now()}`;
-    await fs.writeFile(tmpPath, nextContent, 'utf-8');
-    await fs.rename(tmpPath, filePath);
-  } finally {
-    await release();
-  }
+    return update.result;
+  });
 }
 
 export async function readPendingPatch(
@@ -144,4 +130,65 @@ export async function listPendingPatches(
 
 function isErrno(error: unknown, code: string): error is NodeJS.ErrnoException {
   return typeof error === 'object' && error !== null && 'code' in error && error.code === code;
+}
+
+async function withLockedContextFile<T>(
+  config: Config,
+  project: string,
+  handler: (filePath: string) => Promise<T>,
+): Promise<T> {
+  const filePath = getContextFilePath(config, project);
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+
+  try {
+    await fs.access(filePath);
+  } catch {
+    await fs.writeFile(filePath, '', 'utf-8');
+  }
+
+  const release = await lockfile.lock(filePath, { retries: 5 });
+  try {
+    return await handler(filePath);
+  } finally {
+    await release();
+  }
+}
+
+async function readContextFile(filePath: string): Promise<ContextMemory | null> {
+  const raw = await fs.readFile(filePath, 'utf-8');
+  if (!raw.trim()) {
+    return null;
+  }
+
+  const { data, content } = matter(raw);
+  return {
+    state: ContextStateSchema.parse(data),
+    content,
+  };
+}
+
+async function writeContextFile(
+  filePath: string,
+  memory: ContextMemory,
+): Promise<void> {
+  const nextState: ContextState = {
+    ...memory.state,
+    updated: new Date().toISOString(),
+    version: (memory.state.version ?? 0) + 1,
+  };
+
+  const backupPath = `${filePath}.bak`;
+  try {
+    const stats = await fs.stat(filePath);
+    if (stats.size > 0) {
+      await fs.copyFile(filePath, backupPath);
+    }
+  } catch {
+    // No previous file content to back up on the first write.
+  }
+
+  const nextContent = matter.stringify(memory.content, nextState);
+  const tmpPath = `${filePath}.tmp.${Date.now()}`;
+  await fs.writeFile(tmpPath, nextContent, 'utf-8');
+  await fs.rename(tmpPath, filePath);
 }

@@ -36,6 +36,8 @@ The repository now includes:
 Verified locally:
 
 - `npm run lint`
+- `npm run smoke:mcp`
+- `npm run test:integration`
 - `npm test` with full unit and integration coverage
 - `npm run build`
 - `npm publish --dry-run --access public`
@@ -44,7 +46,7 @@ Verified locally:
 Still requires manual/live verification:
 
 - Google Drive sync with real credentials
-- Interactive MCP-host smoke testing across target clients
+- Interactive MCP-host smoke testing across target clients beyond the SDK stdio smoke harness
 - PMF/user-validation experiments described later in this plan
 
 ## 1. Goals and Success Metrics
@@ -425,8 +427,8 @@ In practice, because the focus is new, we can warn: “Existing session memory (
 | **Testing & CI** | Done | Med | Low | Unit/integration tests and GitHub Actions CI are implemented. |
 | **Git sync** | Done | Med | Med | Automated git sync is implemented and verified against a local bare remote. |
 | **Google Drive sync** | Implemented | Med | Med | Code is in place, but still needs a real credentialed end-to-end smoke test. |
-| **Cross-client MCP validation** | Remaining | Med | Med | Verify the server interactively in target MCP hosts and inspector flows, not just local startup. |
-| **Performance & load testing** | Remaining | Med | Low | Exercise large `context.md` files and concurrent write scenarios beyond unit coverage. |
+| **Cross-client MCP validation** | Partial | Med | Med | An SDK-based stdio smoke test now verifies live MCP behavior; target-host and inspector validation still remain. |
+| **Performance & load testing** | Partial | Med | Low | Concurrency safety tests now cover locked parallel updates, but broader large-file and longer-running load tests still remain. |
 | **Community feedback / PMF** | Remaining | Ongoing | --- | Recruit target users, observe real usage, and tune workflows and messaging. |
 | **Mobile sync guidance / product integration** | Remaining | Low | Med | The sync strategy exists; product-specific mobile onboarding and conflict-resolution UX still need field validation. |
 
@@ -515,9 +517,9 @@ This shows the **two-way flow**: agents *propose*, users *approve/reject*.
 
 ## 15. Actionable Next Steps
 
-1. **Run live MCP inspector/client validation:** Exercise every tool and both resources from an actual MCP host, not just `node build/index.js` startup.
+1. **Run live MCP inspector/client validation:** Exercise every tool and both resources from target MCP hosts and the inspector, beyond the automated SDK stdio smoke.
 2. **Run a real Google Drive sync smoke test:** Use a credentialed folder to validate upload/update behavior, error messaging, and path assumptions.
-3. **Test large and concurrent contexts:** Stress-test multi-thousand-line `context.md` files, repeated patch proposals, and lock contention.
+3. **Expand load testing beyond lock contention:** Stress-test multi-thousand-line `context.md` files, repeated patch proposals, and longer-running concurrent workflows.
 4. **Recruit early users for PMF validation:** Use the experiment plan below to measure actual context-tool usage, review flow usage, and retention.
 5. **Tighten product guidance from field feedback:** Adjust README, skill instructions, onboarding, and sync guidance based on real friction points.
 6. **Cut the first real release after external validation:** Tag, publish, and announce once live sync/client checks are clean.

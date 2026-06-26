@@ -183,6 +183,8 @@ Behavior:
 ```bash
 npm install
 npm run lint
+npm run smoke:mcp
+npm run test:integration
 npm test
 npm run build
 npm publish --dry-run --access public
@@ -192,5 +194,7 @@ npm publish --dry-run --access public
 
 - Build: `npm run build`
 - Test suite: `npm test`
+- MCP stdio smoke: `npm run smoke:mcp`
+- MCP integration and concurrency subset: `npm run test:integration`
 - Git sync: covered by an automated local bare-remote test
 - Google Drive sync: implemented, but live upload still requires manual credentials to verify end to end
