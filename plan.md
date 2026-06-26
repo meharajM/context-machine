@@ -2,9 +2,9 @@
 
 ## Executive Summary
 
-We will **fork and extend** the existing `agent-loop-mcp` (a persistent agent memory server) into a new **ContextEngine MCP** tailored for developer/AI-agent power users. The goal is to transform ContextEngine into a **local-first memory layer** that synchronizes user context (`context.md`) with multiple AI agents via MCP tools. Key milestones include: defining a **master context file structure** (`context.md`, `topics/`, `sessions/`, `pending-patches/`, `sources/`), adding MCP tools (e.g. `propose_context_patch`, `read_context`, `apply_context_patch`, etc.), and implementing a **trust model** (audit logs, diff review, patch approval). 
+ContextEngine MCP is now implemented as a **local-first memory layer** that synchronizes user context (`context.md`) with multiple AI agents via MCP tools. The repository extends `agent-loop-mcp` into a broader system with a **master context file structure** (`context.md`, `topics/`, `sessions/`, `pending-patches/`, `sources/`), a full context tool surface (`propose_context_patch`, `read_context`, `apply_context_patch`, etc.), and a **trust model** based on audit logs, diff review, patch approval, and undo. 
 
-Success means developers can easily **capture projects in `context.md`** and have any AI agent read/write context with explicit review. We will validate usage by recruiting AI developers to use the tools in practice, measuring metrics like frequency of context updates, review times, and user satisfaction. This plan covers architectural changes, new tool designs with JSON schemas, data models, security checks, integration with the mobile ContextEngine app (sync and conflict handling), developer UX (CLI, `npx` setup, code snippets), testing/CI, migration, a prioritized roadmap (with effort/risk), PMF experiments, monetization/distribution strategy, and documentation/onboarding. 
+Success now means developers can easily **capture projects in `context.md`** and have any AI agent read or write context with explicit review, while we validate adoption in real workflows. The implementation is in place; the remaining plan focus is external verification, PMF testing, and release hardening. This document still covers the architecture, trust model, sync strategy, developer UX, testing/CI, migration, prioritized roadmap, PMF experiments, monetization/distribution strategy, and documentation/onboarding. 
 
 Key recommendations (which we will justify and detail below): 
 
@@ -21,6 +21,31 @@ Key recommendations (which we will justify and detail below):
 - **Documentation:** Update README with installation, quick-start CLI commands, and example JSON calls. Create a `SKILL.md` for agents. Provide an onboarding checklist: install `npx`, configure `mcp.json`, run sample script.
 
 The outcome will be a concrete spec and plan to turn `agent-loop-mcp` into a context-layer that “**keeps humans and AI agents in sync**”, moving beyond one-way voice notes to a bidirectional, reviewable memory system.
+
+## Current Implementation Status (2026-06-27)
+
+The repository now includes:
+
+- A full context memory layer with `context.md`, `topics/`, `sources/`, `pending-patches/`, and `sessions/`.
+- All planned context tools: init, read, append, search, log, compact, propose, list, reject, apply, and undo.
+- Legacy `agent-loop-mcp` compatibility: `init_loop`, `log_step`, `compact_memory`, `report_blocker`, `resume_loop`, and `get_tool_suggestions`.
+- Both MCP resources: `contextengine://{project}/context` and `loop://{session_id}`.
+- Audit logging, diff-based patch proposal and apply flow, migration from `~/.agent-loop-mcp`, and optional git or Google Drive sync.
+- Repo-level assets: README, `server.json`, skill file, CI workflow, package metadata, and publish dry-run support.
+
+Verified locally:
+
+- `npm run lint`
+- `npm test` with full unit and integration coverage
+- `npm run build`
+- `npm publish --dry-run --access public`
+- Git sync against a local bare remote
+
+Still requires manual/live verification:
+
+- Google Drive sync with real credentials
+- Interactive MCP-host smoke testing across target clients
+- PMF/user-validation experiments described later in this plan
 
 ## 1. Goals and Success Metrics
 
@@ -390,23 +415,22 @@ In practice, because the focus is new, we can warn: “Existing session memory (
 
 ## 10. Prioritized Roadmap
 
-| Milestone                             | Effort | Risk     | Description                                                                                                                                  |
-|---------------------------------------|:------:|:--------:|----------------------------------------------------------------------------------------------------------------------------------------------|
-| **Context File Model & Storage**      | Low    | Low      | Define `context.md` format. Implement `getSessionFilePath` for project (similar to old loop). Create directories (`topics/`, etc).               |
-| **init_context / read_context tools** | Low    | Low      | Add `init_context(project)` and `read_context(project)` to ListTools/CallTool handlers. Test creation and reading of context.                     |
-| **append_capture tool**               | Low    | Low      | Implement `append_capture` that adds text under a topic heading in `context.md`. Useful for mobile/CLI captures.                               |
-| **search_context_topics tool**        | Med    | Med      | Implement full-text search (simple substring or regex) within `context.md` and topics files. Return matching lines/sections.                    |
-| **propose/list/reject/apply patch**   | High   | Med-High | Build the patch workflow: storing proposals, listing them, diffing, and merging. Key risk: text diff handling and file merges.                 |
-| **log_agent_outcome & compact_topic** | Med    | Medium   | Similar to `append_capture`, allow agents to log results (`log_agent_outcome`), and to compact a topic (clear or summarize old entries).        |
-| **CLI and Examples**                  | Med    | Low      | Provide `npx` commands or scripts for the above tools. Write sample agent skill and CLI workflows (e.g. shell scripts for demonstration).      |
-| **Documentation & SKILL.md**          | Med    | Low      | Write README, “Quickstart,” MCP skill instructions. Include troubleshooting, API examples, and migration notes.                                |
-| **Testing & CI**                      | Med    | Low      | Add automated tests for each tool and major flows. Setup GitHub Actions. Ensure Windows/macOS compatibility (especially locking).                |
-| **Mobile Sync Guidance**              | Low    | Med      | Document how to sync `context.md` with mobile (e.g. via cloud folder or local network). Optional: add a simple HTTP API if time allows.        |
-| **Security & Audit Enhancements**     | Med    | High     | Add audit logs of patches, implement undo operation, maybe user confirmation prompts. These can be phased after core MVP is stable.           |
-| **Performance & Load Testing**        | Med    | Low      | Test context files with large text (thousands of lines). Optimize parsing (gray-matter) if needed.                                            |
-| **Community Feedback/Refinement**     | Ongoing| ---      | Based on beta testing with target users, adjust priorities. If mobile capture uptake is low, maybe shift focus to agent integration first.    |
+| Milestone | Status | Effort | Risk | Description |
+|-----------|:------:|:------:|:----:|-------------|
+| **Context File Model & Storage** | Done | Low | Low | `context.md`, namespaced project storage, `topics/`, `sources/`, `pending-patches/`, and session storage are implemented. |
+| **Core context tools** | Done | Med | Low | `init_context`, `read_context`, `append_capture`, `search_context_topics`, `log_agent_outcome`, and `compact_topic` are implemented and tested. |
+| **Patch workflow** | Done | High | Med-High | Proposal, listing, rejection, apply, expiry cleanup, audit logging, and undo are implemented and covered by integration tests. |
+| **Legacy compatibility** | Done | Med | Med | Migration from `~/.agent-loop-mcp` and all 6 legacy tools/resources are implemented. |
+| **Documentation & packaging** | Done | Med | Low | README, skill file, `server.json`, package metadata, and publish dry-run support are present. |
+| **Testing & CI** | Done | Med | Low | Unit/integration tests and GitHub Actions CI are implemented. |
+| **Git sync** | Done | Med | Med | Automated git sync is implemented and verified against a local bare remote. |
+| **Google Drive sync** | Implemented | Med | Med | Code is in place, but still needs a real credentialed end-to-end smoke test. |
+| **Cross-client MCP validation** | Remaining | Med | Med | Verify the server interactively in target MCP hosts and inspector flows, not just local startup. |
+| **Performance & load testing** | Remaining | Med | Low | Exercise large `context.md` files and concurrent write scenarios beyond unit coverage. |
+| **Community feedback / PMF** | Remaining | Ongoing | --- | Recruit target users, observe real usage, and tune workflows and messaging. |
+| **Mobile sync guidance / product integration** | Remaining | Low | Med | The sync strategy exists; product-specific mobile onboarding and conflict-resolution UX still need field validation. |
 
-The timeline is intentionally agile: start with core storage and simple tools (init, read, append), then build the patch system (the unique differentiator). We mark *propose/apply patch* as **High risk** because diff/merge logic can be tricky (and essential). Effort estimates assume a small team of 1–2 full-stack devs (JS/TS experience). 
+The roadmap is now mostly a **validation and hardening roadmap** rather than a build roadmap. The highest remaining uncertainty is no longer basic implementation; it is external behavior under real clients, real credentials, and real user workflows.
 
 ## 11. Experiment Plan (PMF Validation)
 
@@ -491,23 +515,14 @@ This shows the **two-way flow**: agents *propose*, users *approve/reject*.
 
 ## 15. Actionable Next Steps
 
-1. **Fork & clone the repo:** Create a new GitHub repo (e.g. `contextengine-mcp`) starting from `meharajM/agent-loop-mcp`.  
-2. **Project setup:** Rename namespace/package to `@contextengine/mcp-server`. Initialize TypeScript project with `npm init` (or adapt existing `package.json`).  
-3. **Directory structure:** In code, change `MEMORY_DIR` to use `~/.contextengine` (see [memory.ts](https://raw.githubusercontent.com/meharajM/agent-loop-mcp/main/src/memory.ts) line 553). Create `topics/`, `pending-patches/`, `sources/` subdirectories if not exist.  
-4. **Tool definitions:** In `src/index.ts`, add the new tools to `ListTools` (as in [14] which lists existing tools). Write handlers in `CallTool` for each. Reuse `memory.readMemory` / `writeMemory` where applicable.  
-5. **Implement patch workflow:** For `propose_context_patch`, write code (in `memory.ts` or separate) to compute a diff and save it. For `apply_context_patch`, apply diff (line-oriented or YAML merge) to `context.md`. You might use a library (e.g. `diff` or manual string manipulation).  
-6. **Example JSON:** Embed sample `CallTool` requests in docs, e.g.:  
-   ```json
-   { "tool": "apply_context_patch", "arguments": {"patch_id":"7"} }
-   ```  
-7. **Set up CLI (optional):** Use a tool like [Commander](https://github.com/tj/commander.js) or [Oclif] to create a CLI entrypoint mapping commands to the MCP calls.  
-8. **Testing:** Write Jest tests for new tools. Simulate calls with a mock MCP client (`@modelcontextprotocol/sdk`) and local filesystem.  
-9. **CI pipeline:** Add `.github/workflows/nodejs.yml` to run tests on push. Ensure to test on multiple OS if file locking behavior differs.  
-10. **Documentation:** Update `README.md` with the above instructions, add a new `SKILL.md`, and push to GitHub.  
-11. **PMF experiments:** Prepare a brief “early access” README or survey for recruiting dev testers. Collect feedback.  
-12. **Release:** After initial validation, publish to npm (set up package name and GitHub Package Registry if needed). Announce on developer channels.  
+1. **Run live MCP inspector/client validation:** Exercise every tool and both resources from an actual MCP host, not just `node build/index.js` startup.
+2. **Run a real Google Drive sync smoke test:** Use a credentialed folder to validate upload/update behavior, error messaging, and path assumptions.
+3. **Test large and concurrent contexts:** Stress-test multi-thousand-line `context.md` files, repeated patch proposals, and lock contention.
+4. **Recruit early users for PMF validation:** Use the experiment plan below to measure actual context-tool usage, review flow usage, and retention.
+5. **Tighten product guidance from field feedback:** Adjust README, skill instructions, onboarding, and sync guidance based on real friction points.
+6. **Cut the first real release after external validation:** Tag, publish, and announce once live sync/client checks are clean.
 
-Each of these steps corresponds to sections above. With thorough unit/integration tests and developer-friendly docs, we will have a robust fork ready for ContextEngine’s developer-oriented vision.
+The build work is largely complete. The next steps are now about proving the implementation in real environments and refining the product around actual usage.
 
 ---
 

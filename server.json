@@ -1,0 +1,30 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "contextengine-mcp",
+  "displayName": "ContextEngine MCP",
+  "description": "Local-first context layer for AI agents with reviewable patches, capture tools, legacy loop compatibility, and optional sync.",
+  "publisher": "mhrj",
+  "license": "MIT",
+  "homepage": "https://github.com/meharajM/context-machine",
+  "transport": ["stdio"],
+  "packageName": "@mhrj/contextengine-mcp",
+  "tools": [
+    "init_context",
+    "read_context",
+    "append_capture",
+    "search_context_topics",
+    "log_agent_outcome",
+    "compact_topic",
+    "propose_context_patch",
+    "list_pending_patches",
+    "reject_context_patch",
+    "apply_context_patch",
+    "undo_context_patch",
+    "init_loop",
+    "log_step",
+    "compact_memory",
+    "report_blocker",
+    "resume_loop",
+    "get_tool_suggestions"
+  ]
+}

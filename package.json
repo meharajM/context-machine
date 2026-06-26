@@ -2,18 +2,40 @@
   "name": "@mhrj/contextengine-mcp",
   "version": "0.1.0",
   "description": "Local-first context layer for AI agents via MCP",
+  "homepage": "https://github.com/meharajM/context-machine#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meharajM/context-machine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meharajM/context-machine/issues"
+  },
   "type": "module",
   "main": "build/index.js",
+  "files": [
+    "build",
+    "README.md",
+    "server.json",
+    "skills",
+    ".contextengine.example.json",
+    ".env.example"
+  ],
   "bin": {
-    "contextengine-mcp": "./build/index.js"
+    "contextengine-mcp": "build/index.js"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch src/index.ts",
+    "lint": "tsc --noEmit",
     "start": "node build/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "verify": "npm run lint && npm test && npm run build",
+    "prepublishOnly": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "mcp",
@@ -24,6 +46,9 @@
   ],
   "author": "mhrj",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "diff": "^9.0.0",

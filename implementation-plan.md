@@ -36,6 +36,23 @@ Each phase is independently buildable and verifiable. Later phases depend on ear
 | **P9** | Migration + legacy tool wiring | Legacy MCP calls still work; migration smoke test |
 | **P10** | CI, docs, release | GitHub Actions green; `npm publish` dry-run succeeds |
 
+## Current repo status (2026-06-27)
+
+This plan remains the target architecture. The repository now implements the planned system end to end, with one remaining class of work: live external validation for services that require real credentials or an interactive MCP host.
+
+| Area | Status | Notes |
+|------|--------|-------|
+| **P1** | Done | Build/test toolchain is in place. |
+| **P2** | Done | Config loading and path helpers are implemented and tested. |
+| **P3** | Done | `src/memory.ts` provides context read/write, locking, backups, and pending-patch file CRUD. |
+| **P4** | Done | `src/patches.ts` and `src/audit.ts` are implemented and covered by tests. |
+| **P5** | Done | `init_context`, `read_context`, `append_capture`, `search_context_topics`, `log_agent_outcome`, and `compact_topic` are implemented and covered by tests. |
+| **P6** | Done | Patch proposal, listing, rejection, apply, and undo are implemented and exercised end-to-end in tests. |
+| **P7** | Done | MCP stdio server, context resource, legacy loop resource, all context tools, and all legacy tools are registered. |
+| **P8** | Implemented | Git sync is automated and tested against a local bare remote. Google Drive sync is implemented, but live credentialed upload still requires a manual smoke test. |
+| **P9** | Done | Migration and legacy `agent-loop-mcp` session tools are implemented and covered by tests. |
+| **P10** | Done | CI workflow, packaged skill, `server.json`, README, and publish metadata are present. |
+
 ---
 
 ## P1 — Repo skeleton & toolchain
