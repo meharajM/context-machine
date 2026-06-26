@@ -37,16 +37,19 @@ Verified locally:
 
 - `npm run lint`
 - `npm run smoke:mcp`
+- `npm run smoke:protocol`
+- `npm run smoke:package`
 - `npm run test:integration`
 - `npm test` with full unit and integration coverage
 - `npm run build`
+- `npm run verify`
 - `npm publish --dry-run --access public`
 - Git sync against a local bare remote
 
 Still requires manual/live verification:
 
-- Google Drive sync with real credentials
-- Interactive MCP-host smoke testing across target clients beyond the SDK stdio smoke harness
+- Google Drive sync with real credentials via `npm run smoke:gdrive`
+- Interactive MCP-host spot checks in specific target clients beyond the automated SDK/raw/package stdio coverage
 - PMF/user-validation experiments described later in this plan
 
 ## 1. Goals and Success Metrics
@@ -426,9 +429,9 @@ In practice, because the focus is new, we can warn: “Existing session memory (
 | **Documentation & packaging** | Done | Med | Low | README, skill file, `server.json`, package metadata, and publish dry-run support are present. |
 | **Testing & CI** | Done | Med | Low | Unit/integration tests and GitHub Actions CI are implemented. |
 | **Git sync** | Done | Med | Med | Automated git sync is implemented and verified against a local bare remote. |
-| **Google Drive sync** | Implemented | Med | Med | Code is in place, but still needs a real credentialed end-to-end smoke test. |
-| **Cross-client MCP validation** | Partial | Med | Med | An SDK-based stdio smoke test now verifies live MCP behavior; target-host and inspector validation still remain. |
-| **Performance & load testing** | Partial | Med | Low | Concurrency safety tests now cover locked parallel updates, but broader large-file and longer-running load tests still remain. |
+| **Google Drive sync** | Implemented | Med | Med | Create/update behavior is covered by automated tests, and `npm run smoke:gdrive` provides a live credentialed smoke path when a real folder is available. |
+| **Cross-client MCP validation** | Implemented | Med | Med | SDK-based stdio, raw JSON-RPC stdio, built-binary smoke, and packed-artifact smoke now cover protocol/runtime compatibility; host-specific UI spot checks still remain. |
+| **Performance & load testing** | Partial | Med | Low | Concurrency safety and larger-context workflows are automated, but longer-running soak and scale tests still remain. |
 | **Community feedback / PMF** | Remaining | Ongoing | --- | Recruit target users, observe real usage, and tune workflows and messaging. |
 | **Mobile sync guidance / product integration** | Remaining | Low | Med | The sync strategy exists; product-specific mobile onboarding and conflict-resolution UX still need field validation. |
 
@@ -517,9 +520,9 @@ This shows the **two-way flow**: agents *propose*, users *approve/reject*.
 
 ## 15. Actionable Next Steps
 
-1. **Run live MCP inspector/client validation:** Exercise every tool and both resources from target MCP hosts and the inspector, beyond the automated SDK stdio smoke.
-2. **Run a real Google Drive sync smoke test:** Use a credentialed folder to validate upload/update behavior, error messaging, and path assumptions.
-3. **Expand load testing beyond lock contention:** Stress-test multi-thousand-line `context.md` files, repeated patch proposals, and longer-running concurrent workflows.
+1. **Run live MCP inspector/client validation:** Exercise every tool and both resources from target MCP hosts and the inspector, beyond the automated SDK/raw/package stdio coverage.
+2. **Run a real Google Drive sync smoke test:** Use `npm run smoke:gdrive` with a credentialed folder to validate upload/update behavior, error messaging, and path assumptions.
+3. **Expand load testing beyond current regressions:** Stress-test multi-thousand-line `context.md` files, repeated patch proposals, and longer-running concurrent workflows.
 4. **Recruit early users for PMF validation:** Use the experiment plan below to measure actual context-tool usage, review flow usage, and retention.
 5. **Tighten product guidance from field feedback:** Adjust README, skill instructions, onboarding, and sync guidance based on real friction points.
 6. **Cut the first real release after external validation:** Tag, publish, and announce once live sync/client checks are clean.

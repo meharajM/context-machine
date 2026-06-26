@@ -25,6 +25,8 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
+      - run: npm run smoke:protocol
+      - run: npm run smoke:package
 
   publish:
     name: Publish to npm

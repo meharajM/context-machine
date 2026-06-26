@@ -129,10 +129,20 @@ async function callToolText(
 }
 
 function getFirstText(
-  contents: Array<{ type?: string; text?: string } | { text: string }>,
+  contents: unknown,
 ): string {
-  const item = contents.find((content) => 'text' in content && typeof content.text === 'string');
-  if (!item || typeof item.text !== 'string') {
+  if (!Array.isArray(contents)) {
+    throw new Error('No content array returned');
+  }
+
+  const item = contents.find(
+    (content): content is { text: string } =>
+      typeof content === 'object' &&
+      content !== null &&
+      'text' in content &&
+      typeof content.text === 'string',
+  );
+  if (!item) {
     throw new Error('No text content returned');
   }
 

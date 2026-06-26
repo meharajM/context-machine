@@ -4,11 +4,55 @@ import * as path from 'path';
 import { Readable } from 'node:stream';
 import { promisify } from 'node:util';
 
-import { google } from 'googleapis';
+import { google, type drive_v3 } from 'googleapis';
 
-import { type Config, getRoot } from './config.js';
+import { type Config, getRoot, resolvePath } from './config.js';
 
 const execFileAsync = promisify(execFile);
+
+interface DriveFileEntry {
+  id?: string | null;
+}
+
+interface DriveMediaPayload {
+  body: NodeJS.ReadableStream;
+  mimeType: string;
+}
+
+interface DriveRequestBody {
+  name: string;
+  parents: string[];
+}
+
+interface DriveListResponse {
+  data: {
+    files?: DriveFileEntry[];
+  };
+}
+
+export interface DriveSyncClient {
+  files: {
+    create(params: {
+      media: DriveMediaPayload;
+      requestBody: DriveRequestBody;
+    }): Promise<unknown>;
+    list(params: {
+      fields: string;
+      q: string;
+    }): Promise<DriveListResponse>;
+    update(params: {
+      fileId: string;
+      media: DriveMediaPayload;
+      requestBody: DriveRequestBody;
+    }): Promise<unknown>;
+  };
+}
+
+export interface DriveSyncResult {
+  created: string[];
+  skipped: string[];
+  updated: string[];
+}
 
 export async function ensureGitRepo(config: Config): Promise<void> {
   const root = getRoot(config);
@@ -61,9 +105,12 @@ export async function gitSync(config: Config): Promise<void> {
   await execGit(root, ['push', '-u', 'origin', config.sync.branch]);
 }
 
-export async function gDriveSync(config: Config): Promise<void> {
+export async function gDriveSync(
+  config: Config,
+  driveClient?: DriveSyncClient,
+): Promise<DriveSyncResult> {
   if (config.sync.mode !== 'gdrive') {
-    return;
+    return emptyDriveSyncResult();
   }
 
   const folderId = config.sync.gdriveFolderId;
@@ -74,14 +121,23 @@ export async function gDriveSync(config: Config): Promise<void> {
     );
   }
 
-  const drive = await createDriveClient(credentialsPath);
-  const projectsDir = path.join(getRoot(config), 'projects');
+  const drive = driveClient ?? (await createDriveClient(credentialsPath));
+  return syncProjectContextsToDrive(getRoot(config), folderId, drive);
+}
+
+export async function syncProjectContextsToDrive(
+  root: string,
+  folderId: string,
+  drive: DriveSyncClient,
+): Promise<DriveSyncResult> {
+  const projectsDir = path.join(root, 'projects');
+  const result = emptyDriveSyncResult();
 
   let projects: string[] = [];
   try {
     projects = await fs.readdir(projectsDir);
   } catch {
-    return;
+    return result;
   }
 
   for (const project of projects) {
@@ -90,6 +146,7 @@ export async function gDriveSync(config: Config): Promise<void> {
     try {
       content = await fs.readFile(filePath, 'utf-8');
     } catch {
+      result.skipped.push(project);
       continue;
     }
 
@@ -116,13 +173,17 @@ export async function gDriveSync(config: Config): Promise<void> {
         requestBody,
         media,
       });
+      result.updated.push(project);
     } else {
       await drive.files.create({
         requestBody,
         media,
       });
+      result.created.push(project);
     }
   }
+
+  return result;
 }
 
 export async function syncIfEnabled(config: Config): Promise<void> {
@@ -206,8 +267,10 @@ async function ensureGitignoreEntries(
   }
 }
 
-async function createDriveClient(credentialsPath: string) {
-  const resolved = credentialsPath.replace(/^~/, process.env.HOME ?? '');
+export async function createDriveClient(
+  credentialsPath: string,
+): Promise<drive_v3.Drive> {
+  const resolved = resolvePath(credentialsPath);
   const credentials = JSON.parse(await fs.readFile(resolved, 'utf-8')) as Record<string, unknown>;
   const auth = new google.auth.GoogleAuth({
     credentials: credentials as never,
@@ -215,4 +278,12 @@ async function createDriveClient(credentialsPath: string) {
   });
 
   return google.drive({ version: 'v3', auth });
+}
+
+function emptyDriveSyncResult(): DriveSyncResult {
+  return {
+    created: [],
+    skipped: [],
+    updated: [],
+  };
 }

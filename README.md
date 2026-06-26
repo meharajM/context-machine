@@ -168,6 +168,7 @@ Behavior:
 
 - Uploads each `projects/<project>/context.md` to the configured Drive folder as `<project>-context.md`.
 - Updates existing files in place when names match.
+- Run `npm run smoke:gdrive` with real `CONTEXT_ENGINE_GDRIVE_FOLDER_ID` and `CONTEXT_ENGINE_GDRIVE_CREDENTIALS` to validate a live upload and clean up the smoke file.
 
 ## Onboarding checklist
 
@@ -183,11 +184,17 @@ Behavior:
 ```bash
 npm install
 npm run lint
-npm run smoke:mcp
-npm run test:integration
 npm test
 npm run build
+npm run smoke:mcp
+npm run test:integration
+npm run smoke:protocol
+npm run smoke:package
+npm run verify
 npm publish --dry-run --access public
+
+# Optional, requires live Google Drive credentials
+npm run smoke:gdrive
 ```
 
 ## Current verification
@@ -196,5 +203,8 @@ npm publish --dry-run --access public
 - Test suite: `npm test`
 - MCP stdio smoke: `npm run smoke:mcp`
 - MCP integration and concurrency subset: `npm run test:integration`
+- Raw MCP protocol smoke against the built server: `npm run smoke:protocol`
+- Packed npm artifact smoke after `npm pack` + install: `npm run smoke:package`
+- Full local validation pipeline: `npm run verify`
 - Git sync: covered by an automated local bare-remote test
-- Google Drive sync: implemented, but live upload still requires manual credentials to verify end to end
+- Google Drive sync: create/update behavior is covered by automated tests, and live upload is available via `npm run smoke:gdrive` when credentials are present

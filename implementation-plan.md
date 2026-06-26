@@ -38,7 +38,7 @@ Each phase is independently buildable and verifiable. Later phases depend on ear
 
 ## Current repo status (2026-06-27)
 
-This plan remains the target architecture. The repository now implements the planned system end to end, with one remaining class of work: live external validation for services that require real credentials or an interactive MCP host.
+This plan remains the target architecture. The repository now implements the planned system end to end, with the remaining work focused on live external validation for services that require real credentials or specific interactive hosts.
 
 | Area | Status | Notes |
 |------|--------|-------|
@@ -48,8 +48,8 @@ This plan remains the target architecture. The repository now implements the pla
 | **P4** | Done | `src/patches.ts` and `src/audit.ts` are implemented and covered by tests. |
 | **P5** | Done | `init_context`, `read_context`, `append_capture`, `search_context_topics`, `log_agent_outcome`, and `compact_topic` are implemented and covered by tests. |
 | **P6** | Done | Patch proposal, listing, rejection, apply, and undo are implemented and exercised end-to-end in tests. |
-| **P7** | Done | MCP stdio server, context resource, legacy loop resource, all context tools, and all legacy tools are registered, and an SDK-based stdio smoke test now exercises the live server end to end. |
-| **P8** | Implemented | Git sync is automated and tested against a local bare remote. Google Drive sync is implemented, but live credentialed upload still requires a manual smoke test. |
+| **P7** | Done | MCP stdio server, context resource, legacy loop resource, all context tools, and all legacy tools are registered, with SDK-based stdio coverage, raw JSON-RPC stdio coverage, built-binary smoke, and packed-artifact smoke. |
+| **P8** | Implemented | Git sync is automated and tested against a local bare remote. Google Drive sync create/update behavior is covered by automated tests, and a live credentialed smoke script is available for real-folder validation. |
 | **P9** | Done | Migration and legacy `agent-loop-mcp` session tools are implemented and covered by tests. |
 | **P10** | Done | CI workflow, packaged skill, `server.json`, README, and publish metadata are present. |
 
