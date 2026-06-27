@@ -529,6 +529,29 @@ This shows the **two-way flow**: agents *propose*, users *approve/reject*.
 
 The build work is largely complete. The next steps are now about proving the implementation in real environments and refining the product around actual usage.
 
+## 16. Parallel Execution Tracks
+
+The remaining work can now be executed in parallel with minimal merge risk by keeping ownership separated by file class and outcome:
+
+| Track | Goal | Ownership boundary | Output | Depends on |
+|-------|------|--------------------|--------|------------|
+| **Track A: Soak & scale hardening** | Extend validation beyond current concurrency and large-context coverage | `src/__tests__/soak.test.ts`, optional `scripts/soak-smoke.ts` | CI-friendly soak/load regression | None |
+| **Track B: External validation runbooks** | Make host/client and Google Drive live validation executable by any operator | `docs/host-validation.md`, `docs/gdrive-live-validation.md` | Host matrix, Drive runbook, evidence checklist | Existing smoke scripts |
+| **Track C: PMF and field operations** | Convert product/PMF/release uncertainty into operational checklists | `docs/pmf-validation.md`, `docs/mobile-sync-guidance.md`, `docs/release-gate.md` | Cohort plan, mobile guidance, release gate | Existing roadmap + validation outputs |
+
+Recommended execution order inside the parallel wave:
+
+1. Start all three tracks immediately.
+2. Merge Track A first because it can expand the automated validation contract.
+3. Merge Track B next so live-host and Drive checks follow a stable runbook.
+4. Merge Track C after the validation surfaces are defined, since its release gate should reference the latest checks.
+
+Recommended follow-up wave after this one:
+
+1. Execute the host/client matrix from Track B in at least two real targets.
+2. Execute the live Google Drive smoke with real credentials.
+3. Feed those results into the release gate from Track C.
+
 ---
 
 **Sources:** We followed the agent-loop-mcp design (with modifications), and aligned with MCP/agent best practices. Research (Memori) recommends structured memory layers over raw transcripts, and recent security studies emphasize careful review of agent-written memory. These informed our plan for a portable, bidirectional context system for AI agents.

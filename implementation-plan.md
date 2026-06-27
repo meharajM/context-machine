@@ -53,6 +53,22 @@ This plan remains the target architecture. The repository now implements the pla
 | **P9** | Done | Migration and legacy `agent-loop-mcp` session tools are implemented and covered by tests. |
 | **P10** | Done | CI workflow, packaged skill, `server.json`, README, and publish metadata are present. |
 
+### Parallel next wave
+
+The remaining work now decomposes cleanly into three independent tracks:
+
+1. **Automated soak/load coverage**
+   Scope: new long-running or repeated-workflow validation in isolated test/script files.
+   Write scope: new soak test assets only.
+2. **External validation runbooks**
+   Scope: host/client validation matrix plus live Google Drive smoke operating steps.
+   Write scope: docs only.
+3. **Field-validation and release operations**
+   Scope: PMF execution plan, mobile sync field guidance, and a release gate checklist.
+   Write scope: docs only.
+
+This split is intentional: one track expands the code-backed validation contract while the other two convert the remaining external uncertainty into executable operating documents.
+
 ---
 
 ## P1 — Repo skeleton & toolchain
