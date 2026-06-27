@@ -69,6 +69,32 @@ The remaining work now decomposes cleanly into three independent tracks:
 
 This split is intentional: one track expands the code-backed validation contract while the other two convert the remaining external uncertainty into executable operating documents.
 
+### Release priority order
+
+The remaining work is not equal in release impact. Prioritize it in this order:
+
+1. **Cross-client MCP host validation**
+   Reason: this is the highest-risk claim for the package because it determines whether real hosts can discover tools, resources, and workflows beyond the automated stdio harnesses.
+2. **Google Drive live validation**
+   Reason: the repo advertises optional Drive sync, so a real credentialed smoke is the next-most important claim to prove.
+3. **Soak/load hardening**
+   Reason: the core functionality is implemented, but a longer-running regression layer is the next technical confidence upgrade after host and Drive checks.
+4. **PMF field validation**
+   Reason: after the technical claims are proven, validate whether the workflow is valuable enough to justify broader rollout.
+5. **Mobile field validation**
+   Reason: mobile guidance now exists, but it should be validated after the main technical and PMF flows are understood.
+6. **Release cutover**
+   Reason: tagging and publishing should happen only after the first five priorities are green on the candidate release.
+
+### Release scope decision
+
+There are now two valid completion targets:
+
+1. **Beta candidate**
+   Gate: local validation, CI, package dry-run, and the cross-client MCP host matrix are green. Google Drive, mobile sync, and PMF must be presented as active validation areas rather than proven production claims.
+2. **Full public release**
+   Gate: all beta gates plus live Google Drive validation, soak/load hardening, PMF evidence, mobile field validation, and final release notes are green on the same candidate commit.
+
 ---
 
 ## P1 — Repo skeleton & toolchain

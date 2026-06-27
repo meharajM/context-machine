@@ -199,6 +199,12 @@ npm run smoke:gdrive
 
 ## Current verification
 
+This list describes local verification for a beta candidate. It is not a full
+public-release claim by itself: production Drive support still needs a live
+`npm run smoke:gdrive` pass with real credentials, and full public release
+readiness still depends on the host, mobile, and PMF field gates in
+`docs/release-gate.md`.
+
 - Build: `npm run build`
 - Test suite: `npm test`
 - MCP stdio smoke: `npm run smoke:mcp`
@@ -207,4 +213,4 @@ npm run smoke:gdrive
 - Packed npm artifact smoke after `npm pack` + install: `npm run smoke:package`
 - Full local validation pipeline: `npm run verify`
 - Git sync: covered by an automated local bare-remote test
-- Google Drive sync: create/update behavior is covered by automated tests, and live upload is available via `npm run smoke:gdrive` when credentials are present
+- Google Drive sync: create/update behavior is covered by automated tests; production Drive support should only be claimed after `npm run smoke:gdrive` passes with real `CONTEXT_ENGINE_GDRIVE_FOLDER_ID` and `CONTEXT_ENGINE_GDRIVE_CREDENTIALS`
