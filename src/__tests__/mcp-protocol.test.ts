@@ -23,9 +23,10 @@ describe('raw MCP protocol integration', () => {
   });
 
   it('supports framed JSON-RPC MCP requests without the SDK client', { timeout: 20000 }, async () => {
+    const tsx = getTsxInvocation();
     client = new RawMcpClient({
-      command: getTsxCommand(),
-      args: ['src/index.ts', '--root', tmpDir],
+      command: tsx.command,
+      args: [...tsx.args, 'src/index.ts', '--root', tmpDir],
       cwd: process.cwd(),
       stderr: 'pipe',
     });
@@ -58,8 +59,9 @@ describe('raw MCP protocol integration', () => {
   });
 });
 
-function getTsxCommand(): string {
-  return process.platform === 'win32'
-    ? path.join(process.cwd(), 'node_modules', '.bin', 'tsx.cmd')
-    : path.join(process.cwd(), 'node_modules', '.bin', 'tsx');
+function getTsxInvocation(): { command: string; args: string[] } {
+  return {
+    command: process.execPath,
+    args: [path.join(process.cwd(), 'node_modules', 'tsx', 'dist', 'cli.mjs')],
+  };
 }
