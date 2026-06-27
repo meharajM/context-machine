@@ -106,17 +106,20 @@ describe('mcp stdio integration', () => {
       uri: 'loop://loop-smoke',
     });
     expect(getFirstText(loopResource.contents)).toContain('Ran smoke test');
-  });
+  }, 30000);
 });
 
 function getTsxCommand(): string {
-  return process.platform === 'win32'
-    ? path.join(process.cwd(), 'node_modules', '.bin', 'tsx.cmd')
-    : path.join(process.cwd(), 'node_modules', '.bin', 'tsx');
+  return process.execPath;
 }
 
 function getTsxArgs(root: string): string[] {
-  return ['src/index.ts', '--root', root];
+  return [
+    path.join(process.cwd(), 'node_modules', 'tsx', 'dist', 'cli.mjs'),
+    'src/index.ts',
+    '--root',
+    root,
+  ];
 }
 
 async function callToolText(

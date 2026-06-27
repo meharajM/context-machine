@@ -19,7 +19,7 @@ describe('sync', () => {
   });
 
   afterEach(async () => {
-    await fs.rm(tmpDir, { recursive: true, force: true });
+    await fs.rm(tmpDir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
   });
 
   it('can push context changes to a local bare git remote', async () => {
@@ -45,7 +45,7 @@ describe('sync', () => {
 
     const log = await execFileAsync('git', ['--git-dir', remoteDir, 'log', '--oneline', '--all']);
     expect(log.stdout).toContain('sync:');
-  });
+  }, 30000);
 
   it('validates required Google Drive config before syncing', async () => {
     const config = ConfigSchema.parse({

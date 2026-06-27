@@ -65,6 +65,7 @@ export interface RawMcpClientOptions {
   env?: NodeJS.ProcessEnv;
   requestTimeoutMs?: number;
   stderr?: 'inherit' | 'pipe';
+  shell?: boolean;
   clientName?: string;
   clientVersion?: string;
 }
@@ -105,6 +106,7 @@ export class RawMcpClient {
   private readonly env?: NodeJS.ProcessEnv;
   private readonly requestTimeoutMs: number;
   private readonly stderrMode: 'inherit' | 'pipe';
+  private readonly shell: boolean;
   private child: ChildProcess | undefined;
   private initialized = false;
   private nextId = 1;
@@ -121,6 +123,7 @@ export class RawMcpClient {
     this.env = options.env;
     this.requestTimeoutMs = options.requestTimeoutMs ?? 15000;
     this.stderrMode = options.stderr ?? 'pipe';
+    this.shell = options.shell ?? false;
   }
 
   async start(): Promise<InitializeResult> {
@@ -131,6 +134,7 @@ export class RawMcpClient {
     const child = spawn(this.command, this.args, {
       cwd: this.cwd,
       env: this.env,
+      shell: this.shell,
       stdio: ['pipe', 'pipe', this.stderrMode],
     });
     if (!child.stdin || !child.stdout) {
