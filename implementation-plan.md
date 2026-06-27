@@ -53,6 +53,21 @@ This plan remains the target architecture. The repository now implements the pla
 | **P9** | Done | Migration and legacy `agent-loop-mcp` session tools are implemented and covered by tests. |
 | **P10** | Done | CI workflow, packaged skill, `server.json`, README, and publish metadata are present. |
 
+## Release validation status (2026-06-27)
+
+Candidate commit: `13fa8b9f0d4fa71c200355838ee42f0f69452065`
+
+| Gate | Status | Evidence / blocker |
+|------|--------|--------------------|
+| Local validation | Green | `npm run smoke:package` passed after the Windows shell execution fix; previous local `npm run verify` and `npm publish --dry-run --access public` passed on the candidate line. |
+| CI matrix | Green | GitHub Actions run `28295854918` passed on Ubuntu, macOS, and Windows across Node 18, 20, and 22. |
+| MCP Inspector | Green | Inspector CLI `@modelcontextprotocol/inspector@0.16.8` listed all 17 tools, listed both resource templates, completed context patch workflow, completed legacy loop workflow, and read both resources. |
+| Claude-family host | Blocked | Claude Code `0.2.115` is installed, but `claude --print` returned `Credit balance is too low`. Needs a usable Claude account balance. |
+| Cursor host | Blocked | Cursor `3.9.8` and Cursor Agent are installed, but `cursor agent status` returned `Not logged in`. Needs login or `CURSOR_API_KEY`. |
+| Google Drive live smoke | Blocked | `CONTEXT_ENGINE_GDRIVE_FOLDER_ID` and `CONTEXT_ENGINE_GDRIVE_CREDENTIALS` are unset. |
+| PMF field validation | Not started | Requires the cohort run in `docs/pmf-validation.md`. |
+| Mobile field validation | Not started | Requires the mobile sync cohort checks in `docs/mobile-sync-guidance.md`. |
+
 ### Parallel next wave
 
 The remaining work now decomposes cleanly into three independent tracks:

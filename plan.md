@@ -49,12 +49,12 @@ Verified locally:
 Still requires manual/live verification:
 
 - Google Drive sync with real credentials via `npm run smoke:gdrive`
-- Interactive MCP-host spot checks in specific target clients beyond the automated SDK/raw/package stdio coverage
+- Interactive MCP-host spot checks in specific target clients beyond the automated SDK/raw/package stdio coverage. MCP Inspector CLI validation has passed; Claude-family validation is blocked by local Claude Code account balance, and Cursor validation is blocked by Cursor Agent authentication.
 - PMF/user-validation experiments described later in this plan
 
 Publish scope:
 
-- **Beta release candidate:** acceptable after local validation, CI, package dry-run, and the MCP host validation matrix pass, provided release notes clearly label Google Drive, mobile sync, and PMF learnings as still being validated.
+- **Beta release candidate:** acceptable after local validation, CI, package dry-run, and the MCP host validation matrix pass, provided release notes clearly label Google Drive, mobile sync, and PMF learnings as still being validated. Current status: local validation, CI, package smoke, and MCP Inspector are green; Claude-family and Cursor host checks are waiting on account/auth access.
 - **Full public release:** acceptable only after the beta gates plus live Google Drive validation, soak/load hardening, PMF evidence, and mobile field validation are complete.
 
 ## 1. Goals and Success Metrics

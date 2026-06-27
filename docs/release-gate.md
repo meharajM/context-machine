@@ -19,6 +19,21 @@ or publish a full public release while any required item below is red.
 | Release blocker triage | No unresolved P0 or P1 bugs remain, and every P2 has an owner plus next step |
 | Packaging truthfulness | README, release notes, and marketplace copy do not claim workflows that the validation evidence failed to support |
 
+## Current Candidate Snapshot
+
+As of 2026-06-27, candidate commit
+`13fa8b9f0d4fa71c200355838ee42f0f69452065` has a green local/CI/package
+baseline and a passing MCP Inspector CLI workflow. See
+[release-validation-evidence.md](/Users/meharaj/context-machine/docs/release-validation-evidence.md)
+for command evidence.
+
+Remaining red gates before full public release:
+
+- Claude-family host validation is blocked by Claude Code account balance.
+- Cursor host validation is blocked by Cursor Agent authentication.
+- Google Drive live smoke is blocked by missing `CONTEXT_ENGINE_GDRIVE_FOLDER_ID` and `CONTEXT_ENGINE_GDRIVE_CREDENTIALS`.
+- PMF and mobile validation still require external cohort runs.
+
 ## Pre-Tag Checklist
 
 1. Start from the exact commit that passed local checks and CI.
