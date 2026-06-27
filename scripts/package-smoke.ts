@@ -23,8 +23,8 @@ async function main() {
 
   try {
     tarballPath = await packRepository(cwd);
-    await execFileAsync(getNpmCommand(), ['init', '-y'], { cwd: tmpDir });
-    await execFileAsync(getNpmCommand(), ['install', tarballPath], { cwd: tmpDir });
+    await execNpm(['init', '-y'], tmpDir);
+    await execNpm(['install', tarballPath], tmpDir);
 
     const client = new RawMcpClient({
       command: getNodeBinPath(tmpDir, 'contextengine-mcp'),
@@ -60,7 +60,7 @@ async function main() {
 }
 
 async function packRepository(cwd: string): Promise<string> {
-  const { stdout } = await execFileAsync(getNpmCommand(), ['pack', '--json'], { cwd });
+  const { stdout } = await execNpm(['pack', '--json'], cwd);
   const result = JSON.parse(stdout) as NpmPackEntry[];
   const filename = result[0]?.filename;
   if (!filename) {
@@ -70,8 +70,11 @@ async function packRepository(cwd: string): Promise<string> {
   return path.join(cwd, filename);
 }
 
-function getNpmCommand(): string {
-  return process.platform === 'win32' ? 'npm.cmd' : 'npm';
+async function execNpm(args: string[], cwd: string) {
+  return execFileAsync('npm', args, {
+    cwd,
+    shell: process.platform === 'win32',
+  });
 }
 
 main().catch((error) => {
