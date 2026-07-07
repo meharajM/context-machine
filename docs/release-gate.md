@@ -21,16 +21,18 @@ or publish a full public release while any required item below is red.
 
 ## Current Candidate Snapshot
 
-As of 2026-06-27, candidate commit
-`13fa8b9f0d4fa71c200355838ee42f0f69452065` has a green local/CI/package
-baseline and a passing MCP Inspector CLI workflow. See
+As of 2026-07-08, candidate commit
+`13fa8b9f0d4fa71c200355838ee42f0f69452065` still has a green local/CI/package
+baseline and a passing MCP Inspector CLI workflow, and the current working tree
+also reran `npm run verify` plus `npm publish --dry-run --access public`
+successfully. See
 [release-validation-evidence.md](/Users/meharaj/context-machine/docs/release-validation-evidence.md)
 for command evidence.
 
 Remaining red gates before full public release:
 
 - Claude-family host validation is blocked by Claude Code account balance.
-- Cursor host validation is blocked by Cursor Agent authentication.
+- Cursor host validation is blocked because the `cursor` CLI is not installed on this machine.
 - Google Drive live smoke is blocked by missing `CONTEXT_ENGINE_GDRIVE_FOLDER_ID` and `CONTEXT_ENGINE_GDRIVE_CREDENTIALS`.
 - PMF and mobile validation still require external cohort runs.
 

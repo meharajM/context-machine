@@ -18,7 +18,7 @@ Treat these as the required host targets for the current release:
 |---|---|
 | MCP Inspector | Best place to prove tool/resource discovery and inspect raw responses. |
 | One Claude-family stdio host (`Claude Code` or `Claude Desktop`) | Matches the repo plan’s Claude workflow target. |
-| Cursor | Matches the repo plan’s Cursor workflow target. |
+| Cursor | Matches the repo plan’s Cursor workflow target. The validating machine must have the `cursor` CLI / Cursor Agent installed before this row can be attempted. |
 
 Do not block on hosts that cannot launch stdio servers. `server.json` declares `stdio` only.
 
@@ -99,7 +99,7 @@ Use the exact inputs below so results are comparable across hosts.
 2. Run `npm run smoke:mcp`.
 3. Validate MCP Inspector first. It gives the best error surface for discovery, resources, and raw tool results.
 4. Validate one Claude-family host next.
-5. Validate Cursor last.
+5. Validate Cursor last, but only on a machine where the `cursor` CLI is installed and authenticated.
 
 If Inspector fails, stop and fix that before spending time in Claude or Cursor. If Inspector passes but one UI host fails, treat that as a host-specific integration issue and capture its exact behavior.
 

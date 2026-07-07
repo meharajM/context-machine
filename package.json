@@ -36,7 +36,7 @@
     "test:integration": "vitest run src/__tests__/mcp-integration.test.ts src/__tests__/mcp-protocol.test.ts src/__tests__/concurrency.test.ts",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "verify": "npm run lint && npm test && npm run build && npm run smoke:protocol && npm run smoke:package",
+    "verify": "npm run lint && npm test && npm run build && npm run smoke:mcp && npm run smoke:protocol && npm run smoke:package",
     "prepublishOnly": "npm run build"
   },
   "publishConfig": {

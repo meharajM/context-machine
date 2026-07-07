@@ -62,8 +62,8 @@ Candidate commit: `13fa8b9f0d4fa71c200355838ee42f0f69452065`
 | Local validation | Green | `npm run smoke:package` passed after the Windows shell execution fix; previous local `npm run verify` and `npm publish --dry-run --access public` passed on the candidate line. |
 | CI matrix | Green | GitHub Actions run `28295854918` passed on Ubuntu, macOS, and Windows across Node 18, 20, and 22. |
 | MCP Inspector | Green | Inspector CLI `@modelcontextprotocol/inspector@0.16.8` listed all 17 tools, listed both resource templates, completed context patch workflow, completed legacy loop workflow, and read both resources. |
-| Claude-family host | Blocked | Claude Code `0.2.115` is installed, but `claude --print` returned `Credit balance is too low`. Needs a usable Claude account balance. |
-| Cursor host | Blocked | Cursor `3.9.8` and Cursor Agent are installed, but `cursor agent status` returned `Not logged in`. Needs login or `CURSOR_API_KEY`. |
+| Claude-family host | Blocked | Claude Code is installed, but `claude --print` still returns `Credit balance is too low`. Needs a usable Claude account balance. |
+| Cursor host | Blocked | The `cursor` CLI is not installed on this machine. Install Cursor / Cursor Agent first, then log in or provide `CURSOR_API_KEY`. |
 | Google Drive live smoke | Blocked | `CONTEXT_ENGINE_GDRIVE_FOLDER_ID` and `CONTEXT_ENGINE_GDRIVE_CREDENTIALS` are unset. |
 | PMF field validation | Not started | Requires the cohort run in `docs/pmf-validation.md`. |
 | Mobile field validation | Not started | Requires the mobile sync cohort checks in `docs/mobile-sync-guidance.md`. |
@@ -72,9 +72,9 @@ Candidate commit: `13fa8b9f0d4fa71c200355838ee42f0f69452065`
 
 The remaining work now decomposes cleanly into three independent tracks:
 
-1. **Automated soak/load coverage**
-   Scope: new long-running or repeated-workflow validation in isolated test/script files.
-   Write scope: new soak test assets only.
+1. **Validation automation alignment**
+   Scope: keep the documented smoke surface, `verify`, and CI in sync as the repo evolves.
+   Write scope: `package.json`, CI workflow, and validation-facing docs.
 2. **External validation runbooks**
    Scope: host/client validation matrix plus live Google Drive smoke operating steps.
    Write scope: docs only.
@@ -82,7 +82,7 @@ The remaining work now decomposes cleanly into three independent tracks:
    Scope: PMF execution plan, mobile sync field guidance, and a release gate checklist.
    Write scope: docs only.
 
-This split is intentional: one track expands the code-backed validation contract while the other two convert the remaining external uncertainty into executable operating documents.
+This split is intentional: one track keeps the automated validation contract aligned with the repo, while the other two convert the remaining external uncertainty into executable operating documents.
 
 ### Release priority order
 
@@ -92,13 +92,11 @@ The remaining work is not equal in release impact. Prioritize it in this order:
    Reason: this is the highest-risk claim for the package because it determines whether real hosts can discover tools, resources, and workflows beyond the automated stdio harnesses.
 2. **Google Drive live validation**
    Reason: the repo advertises optional Drive sync, so a real credentialed smoke is the next-most important claim to prove.
-3. **Soak/load hardening**
-   Reason: the core functionality is implemented, but a longer-running regression layer is the next technical confidence upgrade after host and Drive checks.
-4. **PMF field validation**
+3. **PMF field validation**
    Reason: after the technical claims are proven, validate whether the workflow is valuable enough to justify broader rollout.
-5. **Mobile field validation**
+4. **Mobile field validation**
    Reason: mobile guidance now exists, but it should be validated after the main technical and PMF flows are understood.
-6. **Release cutover**
+5. **Release cutover**
    Reason: tagging and publishing should happen only after the first five priorities are green on the candidate release.
 
 ### Release scope decision
@@ -108,7 +106,7 @@ There are now two valid completion targets:
 1. **Beta candidate**
    Gate: local validation, CI, package dry-run, and the cross-client MCP host matrix are green. Google Drive, mobile sync, and PMF must be presented as active validation areas rather than proven production claims.
 2. **Full public release**
-   Gate: all beta gates plus live Google Drive validation, soak/load hardening, PMF evidence, mobile field validation, and final release notes are green on the same candidate commit.
+   Gate: all beta gates plus live Google Drive validation, PMF evidence, mobile field validation, and final release notes are green on the same candidate commit.
 
 ---
 

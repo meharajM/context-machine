@@ -49,13 +49,13 @@ Verified locally:
 Still requires manual/live verification:
 
 - Google Drive sync with real credentials via `npm run smoke:gdrive`
-- Interactive MCP-host spot checks in specific target clients beyond the automated SDK/raw/package stdio coverage. MCP Inspector CLI validation has passed; Claude-family validation is blocked by local Claude Code account balance, and Cursor validation is blocked by Cursor Agent authentication.
+- Interactive MCP-host spot checks in specific target clients beyond the automated SDK/raw/package stdio coverage. MCP Inspector CLI validation has passed; Claude-family validation is blocked by local Claude Code account balance, and Cursor validation is blocked because the `cursor` CLI is not installed on this machine.
 - PMF/user-validation experiments described later in this plan
 
 Publish scope:
 
-- **Beta release candidate:** acceptable after local validation, CI, package dry-run, and the MCP host validation matrix pass, provided release notes clearly label Google Drive, mobile sync, and PMF learnings as still being validated. Current status: local validation, CI, package smoke, and MCP Inspector are green; Claude-family and Cursor host checks are waiting on account/auth access.
-- **Full public release:** acceptable only after the beta gates plus live Google Drive validation, soak/load hardening, PMF evidence, and mobile field validation are complete.
+- **Beta release candidate:** acceptable after local validation, CI, package dry-run, and the MCP host validation matrix pass, provided release notes clearly label Google Drive, mobile sync, and PMF learnings as still being validated. Current status: local validation, CI, package smoke, and MCP Inspector are green; Claude-family validation is still waiting on account balance, and Cursor validation cannot run on this machine until the `cursor` CLI is installed.
+- **Full public release:** acceptable only after the beta gates plus live Google Drive validation, PMF evidence, and mobile field validation are complete. Automated soak/load regression coverage is already part of the local validation baseline.
 
 ## 1. Goals and Success Metrics
 
@@ -436,9 +436,9 @@ In practice, because the focus is new, we can warn: “Existing session memory (
 | **Git sync** | Done | Med | Med | Automated git sync is implemented and verified against a local bare remote. |
 | **Cross-client MCP validation** | Implemented | Med | Med | Highest release priority. SDK-based stdio, raw JSON-RPC stdio, built-binary smoke, and packed-artifact smoke now cover protocol/runtime compatibility; host-specific UI spot checks still remain. |
 | **Google Drive sync** | Implemented | Med | Med | Second release priority. Create/update behavior is covered by automated tests, and `npm run smoke:gdrive` provides a live credentialed smoke path when a real folder is available. |
-| **Performance & load testing** | Partial | Med | Low | Third release priority. Concurrency safety and larger-context workflows are automated, but longer-running soak and scale tests still remain. |
-| **Community feedback / PMF** | Remaining | Ongoing | --- | Fourth release priority. Recruit target users, observe real usage, and tune workflows and messaging. |
-| **Mobile sync guidance / product integration** | Remaining | Low | Med | Fifth release priority. The sync strategy exists; product-specific mobile onboarding and conflict-resolution UX still need field validation. |
+| **Performance & load testing** | Implemented | Med | Low | Concurrency safety, larger-context workflows, and repeated capture/patch soak regressions are automated. Longer-running scale experiments are optional follow-on hardening, not a current release blocker. |
+| **Community feedback / PMF** | Remaining | Ongoing | --- | Third release priority. Recruit target users, observe real usage, and tune workflows and messaging. |
+| **Mobile sync guidance / product integration** | Remaining | Low | Med | Fourth release priority. The sync strategy exists; product-specific mobile onboarding and conflict-resolution UX still need field validation. |
 
 The roadmap is now mostly a **validation and hardening roadmap** rather than a build roadmap. The highest remaining uncertainty is no longer basic implementation; it is external behavior under real clients, real credentials, and real user workflows.
 
@@ -527,11 +527,10 @@ This shows the **two-way flow**: agents *propose*, users *approve/reject*.
 
 1. **Run live MCP inspector/client validation:** This is the highest-priority release gate. Exercise every tool and both resources from target MCP hosts and the inspector, beyond the automated SDK/raw/package stdio coverage.
 2. **Run a real Google Drive sync smoke test:** This is next because the repo still advertises optional Drive sync. Use `npm run smoke:gdrive` with a credentialed folder to validate upload/update behavior, error messaging, and path assumptions.
-3. **Expand load testing beyond current regressions:** This is the final technical validation priority before broader field rollout. Stress-test multi-thousand-line `context.md` files, repeated patch proposals, and longer-running concurrent workflows.
-4. **Recruit early users for PMF validation:** After technical release gates are green, run the experiment plan below to measure actual context-tool usage, review flow usage, and retention.
-5. **Validate mobile field guidance and refine product guidance:** Use the mobile cohort to answer sync/conflict questions, then adjust README, skill instructions, onboarding, and sync guidance based on real friction points.
-6. **Cut the first beta release after local and host gates are green:** Tag and publish a beta only if unvalidated workflows are labeled accordingly.
-7. **Cut the full public release after the first five items are green:** Announce a broad release only after the technical and field-validation priorities above are complete.
+3. **Recruit early users for PMF validation:** After technical release gates are green, run the experiment plan below to measure actual context-tool usage, review flow usage, and retention.
+4. **Validate mobile field guidance and refine product guidance:** Use the mobile cohort to answer sync/conflict questions, then adjust README, skill instructions, onboarding, and sync guidance based on real friction points.
+5. **Cut the first beta release after local and host gates are green:** Tag and publish a beta only if unvalidated workflows are labeled accordingly.
+6. **Cut the full public release after the first four items are green:** Announce a broad release only after the technical and field-validation priorities above are complete.
 
 The build work is largely complete. The next steps are now about proving the implementation in real environments and refining the product around actual usage.
 
@@ -541,10 +540,9 @@ For release readiness, the remaining work should be tackled in this order:
 
 1. **Cross-client MCP host validation**
 2. **Google Drive live validation**
-3. **Soak/load hardening**
-4. **PMF field validation**
-5. **Mobile field validation**
-6. **Release cutover**
+3. **PMF field validation**
+4. **Mobile field validation**
+5. **Release cutover**
 
 ## 16. Parallel Execution Tracks
 
@@ -552,14 +550,14 @@ The remaining work can now be executed in parallel with minimal merge risk by ke
 
 | Track | Goal | Ownership boundary | Output | Depends on |
 |-------|------|--------------------|--------|------------|
-| **Track A: Soak & scale hardening** | Extend validation beyond current concurrency and large-context coverage | `src/__tests__/soak.test.ts`, optional `scripts/soak-smoke.ts` | CI-friendly soak/load regression | None |
+| **Track A: Validation automation alignment** | Keep repo automation aligned with the documented smoke surface | `package.json`, `.github/workflows/ci.yml`, validation docs | Consistent local and CI gates | Existing smoke scripts |
 | **Track B: External validation runbooks** | Make host/client and Google Drive live validation executable by any operator | `docs/host-validation.md`, `docs/gdrive-live-validation.md` | Host matrix, Drive runbook, evidence checklist | Existing smoke scripts |
 | **Track C: PMF and field operations** | Convert product/PMF/release uncertainty into operational checklists | `docs/pmf-validation.md`, `docs/mobile-sync-guidance.md`, `docs/release-gate.md` | Cohort plan, mobile guidance, release gate | Existing roadmap + validation outputs |
 
 Recommended execution order inside the parallel wave:
 
 1. Start all three tracks immediately.
-2. Merge Track A first because it can expand the automated validation contract.
+2. Merge Track A first because it keeps the documented validation contract truthful.
 3. Merge Track B next so live-host and Drive checks follow a stable runbook.
 4. Merge Track C after the validation surfaces are defined, since its release gate should reference the latest checks.
 
