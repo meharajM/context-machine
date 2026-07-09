@@ -1,6 +1,6 @@
 {
   "name": "@mhrj/contextengine-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Team Project Memory skill for shared AI agent project knowledge, plus the ContextEngine MCP server",
   "homepage": "https://github.com/meharajM/context-machine#readme",
   "repository": {

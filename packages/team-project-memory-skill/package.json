@@ -1,0 +1,43 @@
+{
+  "name": "@mhrj/team-project-memory-skill",
+  "version": "0.1.0",
+  "description": "Team Project Memory skill for shared AI agent project knowledge across Codex, Claude Code, Cursor, Copilot, Devin, Cline, and other coding agents",
+  "homepage": "https://github.com/meharajM/context-machine/tree/main/skills/team-project-memory#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meharajM/context-machine.git",
+    "directory": "packages/team-project-memory-skill"
+  },
+  "bugs": {
+    "url": "https://github.com/meharajM/context-machine/issues"
+  },
+  "files": [
+    "README.md",
+    "skills"
+  ],
+  "keywords": [
+    "ai-agents",
+    "agent-skills",
+    "ai-agent-skills",
+    "skills",
+    "skills-sh",
+    "team-memory",
+    "project-memory",
+    "shared-memory",
+    "agent-memory",
+    "ai-memory",
+    "knowledge-base",
+    "agent-knowledge-base",
+    "repo-context",
+    "debugging",
+    "developer-productivity",
+    "codex",
+    "claude-code",
+    "cursor",
+    "copilot",
+    "devin",
+    "cline"
+  ],
+  "author": "mhrj",
+  "license": "MIT"
+}

@@ -1,22 +1,18 @@
-# ContextEngine MCP
+# Team Project Memory Skill
 
-Local-first context management for AI agents over MCP. It gives agents a shared project memory, reviewable patch workflow, append-only capture tools, legacy `agent-loop-mcp` compatibility, and optional sync to git or Google Drive.
+Shared project memory and team knowledge base for AI coding agents.
+
+Use this when a team using Codex, Claude Code, Cursor, GitHub Copilot, Devin, Cline, or other agents wants reusable repo learnings, solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions in git without overriding repo-local instructions.
+
+The v1 product is skill-first. It does not require the ContextEngine MCP server.
 
 ## Install
 
-```bash
-npm install -g @mhrj/contextengine-mcp
-```
-
-Or run it without a global install:
+Install the skill-only npm package for discovery:
 
 ```bash
-npx -y @mhrj/contextengine-mcp
+npm view @mhrj/team-project-memory-skill
 ```
-
-## Team Project Memory Skill
-
-This repo also ships `team-project-memory`, an additive skill for sharing project learnings across team members and AI agents without replacing repo-local instructions.
 
 Install with the open Skills CLI for all supported local agents:
 
@@ -66,6 +62,20 @@ codex plugin add team-project-memory@context-machine-team
 After installing, start a new Codex thread so the skill list refreshes.
 
 The npm package below is for the existing ContextEngine MCP server. Team Project Memory can be used without installing or running that MCP server.
+
+## Optional ContextEngine MCP
+
+This repo also contains the older ContextEngine MCP server. It is optional infrastructure for teams that later want MCP-based retrieval, sync, or patch workflows.
+
+```bash
+npm install -g @mhrj/contextengine-mcp
+```
+
+Or run it without a global install:
+
+```bash
+npx -y @mhrj/contextengine-mcp
+```
 
 ## MCP config
 
