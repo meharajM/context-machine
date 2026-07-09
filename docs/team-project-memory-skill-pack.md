@@ -10,6 +10,18 @@ This repo now treats team project memory as a layered system:
 
 ## Install Shape
 
+Recommended multi-agent install with the open Skills CLI:
+
+```bash
+npx skills add meharajM/context-machine --skill team-project-memory --agent '*' -g -y
+```
+
+List the skill from the repo:
+
+```bash
+npx skills add meharajM/context-machine --list
+```
+
 Recommended skill-only install with Codex Skill Installer:
 
 ```bash

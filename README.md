@@ -18,6 +18,18 @@ npx -y @mhrj/contextengine-mcp
 
 This repo also ships `team-project-memory`, an additive skill for sharing project learnings across team members and AI agents without replacing repo-local instructions.
 
+Install with the open Skills CLI for all supported local agents:
+
+```bash
+npx skills add meharajM/context-machine --skill team-project-memory --agent '*' -g -y
+```
+
+List the available skills in this repo:
+
+```bash
+npx skills add meharajM/context-machine --list
+```
+
 Install the skill directly with Codex Skill Installer:
 
 ```bash

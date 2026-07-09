@@ -1,11 +1,13 @@
 ---
 name: team-project-memory
-description: Additive team-shared project memory for AI agents. Capture validated learnings, failed attempts, confidence, and next-reuse instructions in git without overriding repo-local instructions or replacing existing project context.
+description: Shared project memory and team knowledge base for AI coding agents. Use when teams using Codex, Claude Code, Cursor, Copilot, Devin, Cline, or other agents need reusable repo learnings, solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions in git without overriding repo-local instructions.
 ---
 
 # Team Project Memory
 
 Use this skill when a team wants shared project learnings that survive across teammates, machines, and agent sessions without replacing the repo’s existing instructions.
+
+Search terms: team memory, project memory, shared AI memory, agent knowledge base, repo learnings, debugging history, failed attempts, solved issues, onboarding context, multi-agent development.
 
 ## Purpose
 
