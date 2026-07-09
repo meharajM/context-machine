@@ -17,6 +17,8 @@
     "README.md",
     "server.json",
     "skills",
+    "plugins",
+    ".agents",
     ".contextengine.example.json",
     ".env.example"
   ],
@@ -47,7 +49,11 @@
     "context",
     "ai-agents",
     "memory",
-    "local-first"
+    "local-first",
+    "team-memory",
+    "agent-skills",
+    "knowledge-base",
+    "codex-plugin"
   ],
   "author": "mhrj",
   "license": "MIT",

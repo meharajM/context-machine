@@ -14,6 +14,26 @@ Or run it without a global install:
 npx -y @mhrj/contextengine-mcp
 ```
 
+## Team Project Memory Skill
+
+This repo also ships `team-project-memory`, an additive skill for sharing project learnings across team members and AI agents without replacing repo-local instructions.
+
+Install the repo-backed Codex marketplace:
+
+```bash
+codex plugin marketplace add meharajM/context-machine --ref main
+codex plugin add team-project-memory@context-machine-team
+```
+
+For local development against this checkout:
+
+```bash
+codex plugin marketplace add /Users/meharaj/context-machine
+codex plugin add team-project-memory@context-machine-team
+```
+
+After installing, start a new Codex thread so the skill list refreshes.
+
 ## MCP config
 
 ```json
