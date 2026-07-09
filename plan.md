@@ -8,6 +8,7 @@ Success now means developers can easily **capture projects in `context.md`** and
 
 Key recommendations (which we will justify and detail below): 
 
+- **Updated product direction:** Treat the next product bet as **skill-first team project memory**, not MCP-first standalone product expansion. Native agent memories already cover much of the solo-user case; v1 should validate whether team-shared `.agents`/`AGENTS.md` project memory lets one teammate's agent reuse another teammate's learnings.
 - **Architectural separation:** Keep both **agent loops (session memory)** and **project context memory**. Use `agent-loop-mcp` code for short-term agent state, but add a **master `context.md`** for long-lived user context, plus directories for topics, patches, etc.  
 - **New MCP tools:** Implement tools for reading/searching context, appending captures, proposing and applying context patches, reviewing pending patches, logging agent outcomes, and compacting topics. These tools will follow MCP JSON schemas and return diffs or content.  
 - **Trust & provenance:** Show source metadata, require user approval of agent-proposed patches (`diff review` UI/CLI), and maintain an **audit log**. Start with manual `approve/ reject` workflows before any auto-writeback.  
@@ -15,8 +16,8 @@ Key recommendations (which we will justify and detail below):
 - **Developer UX:** Provide a simple Node CLI via `npx @yourorg/mcp-contextengine`. Offer example MCP skill code for Claude/ChatGPT/Cursor that calls the new tools. Provide JSON payload examples and scripts for common flows (init context, propose patch, apply patch).  
 - **Testing and CI:** Write unit tests for the memory layer (lockfile, parsing), integration tests simulating agent/tool calls (using an MCP client). Use GitHub Actions for CI, with a sample local dev environment (`node`, MCP client stub).  
 - **Migration:** Plan how existing `~/.agent-loop-mcp` sessions are handled. Possibly read old sessions as topics in the new system or migrate them into `topics/`. Keep backward compatibility for `init_loop` if needed.  
-- **Roadmap:** Break into phases (e.g. Context file model, core tools, patch workflow, agent integration, mobile sync). Each milestone has an estimated effort (Low/Med/High) and risk (e.g. concurrency, UX).  
-- **PMF experiments:** Recruit 10–20 AI developers, give them ContextEngine MCP for a week, and measure usage of context tools. Also test with Obsidian/Markdown users. AB test landing-page messaging. Metrics include usage frequency, retained users, and “would be disappointed” scores.  
+- **Roadmap:** Keep the implemented MCP release track, but add a new validation track: skill-first team memory, then MCP/indexing only if file-based memory shows real limits.  
+- **PMF experiments:** Recruit project teams, not solo users. Measure whether teammate B's agent avoids a repeated failed path after teammate A's agent publishes a session learning into shared project memory.  
 - **Monetization:** Likely open-source MCP core, possibly a Pro tier (advanced features like git sync, multi-project support, UI) or Cloud offering. Distribute via npm (`@contextengine/mcp`), list in MCP registries (MCP Marketplaces, SkillFM), and community (agent dev forums).  
 - **Documentation:** Update README with installation, quick-start CLI commands, and example JSON calls. Create a `SKILL.md` for agents. Provide an onboarding checklist: install `npx`, configure `mcp.json`, run sample script.
 
@@ -444,15 +445,59 @@ The roadmap is now mostly a **validation and hardening roadmap** rather than a b
 
 ## 11. Experiment Plan (PMF Validation)
 
-To ensure we are solving a real problem for devs and agents, we propose these validation experiments:
+The latest product decision is to validate this first as a **skill-first team project memory workflow**, not as a larger MCP-first product expansion.
+
+Reasoning:
+
+- Native agent memories and repo instruction files already solve much of the individual developer use case.
+- A standalone MCP product is only justified if team memory grows beyond what `.agents`/`AGENTS.md` can handle.
+- The first valuable proof is cross-teammate reuse, not personal persistence.
+
+V1 should start with:
+
+- `skills/team-project-memory/SKILL.md` as the additive coordination skill
+- `.agents/project-memory/topics/*.md`
+- `AGENTS.md` instructions that tell agents how to read and update project memory
+- a session-end learning template
+- confidence/status rules
+- short publishable memory items
+- review fallback through normal git diff, branch, or PR
+
+V1 should not start with:
+
+- a hosted service
+- Slack/Jira/internal-doc ingestion
+- Google Drive as the team source of truth
+- semantic graph search
+- heavy MCP indexing as a prerequisite
+
+MCP becomes the next step only if the skill-first workflow proves one of these limits:
+
+- memory files become too large to load efficiently
+- agents return inconsistent search/edit behavior
+- conflict handling becomes frequent
+- teams need one memory repo across multiple project repos
+- confidence/stale/duplicate detection needs deterministic tooling
+
+The primary PMF metric is:
+
+- **teammate repeated debugging loops avoided**
+
+The minimum successful validation event is:
+
+1. teammate A's agent solves, fails, or blocks on a project-specific issue
+2. teammate A's agent publishes a short structured learning
+3. teammate B's agent reads the shared memory before exploring
+4. teammate B avoids a failed path or reuses a validated fix
+5. the memory update remains readable in git review
 
 | Experiment           | Participants             | Setup / Tasks                                                                                          | Success Metric                                 |
 |----------------------|--------------------------|--------------------------------------------------------------------------------------------------------|-----------------------------------------------|
-| **AI Agent Workflow Test** | 10–15 AI-savvy developers (active on GitHub, use Claude/ChatGPT/AI agents regularly) | Provide the ContextEngine MCP tool and instructions. Ask them to integrate it into a coding or research task: *“Use it as your project memory. Every time you complete a subtask with an AI agent, propose a patch to update context.”* Collect usage logs. | - ≥40% say they’d be “very disappointed” if the tool vanished.<br>- ≥50% propose ≥3 patches per week.<br>- ≥30% use `read_context`/`search_context_topics` at least 5 times (indicating they rely on context). |
-| **Obsidian/Markdown User Test** | 5–10 PKM users (familiar with Obsidian/markdown, local vault users) | Give them the voice/text capture app connected to ContextEngine MCP. Task: “Use voice or quick notes to capture ideas into your Markdown vault for 7 days. Occasionally run an agent (Claude or GPT) on your vault and let it update it.” | - ≥10 voice/text captures per user.<br>- ≥60% of captures end up categorized/edited (showing they value structure).<br>- ≥50% apply at least one agent-suggested context update. |
-| **Messaging A/B Test** | Online (developer forums, newsletters) | Create 3 landing pages with different taglines: 1) “AI voice notes for your second brain.” 2) “Private `context.md` for all your AI agents.” 3) “Never re-explain your project to AI again.” Measure click-throughs and signups for an early adopter waitlist. | Determine which headline gets highest CTR and signups among audience (expect #2 or #3 to appeal more to devs than generic “voice notes”). |
+| **Skill-first team memory test** | 3–5 project teams, 2–4 developers each | Add `.agents/project-memory/topics/*.md`, `AGENTS.md` memory instructions, and the session-end learning template to a real project. Each team member uses their normal AI agent. | At least 2 teams show teammate B's agent using teammate A's memory to avoid a repeated failed path or reuse a validated fix. |
+| **Reviewability test** | Same project teams plus one tech lead or reviewer per team | Review auto-published memory updates in normal git diffs or PRs. Track whether updates are short, clear, and safe enough to keep. | ≥70% of published learnings are accepted or lightly edited; 0 silent overwrites or evidence deletion incidents. |
+| **MCP escalation test** | Teams whose memory files grow or conflict during the skill-first test | Measure when file-based memory becomes too large, slow, inconsistent, or conflict-prone. Only then test an MCP index/search/publish layer. | MCP is justified only if it measurably reduces token load, search time, or merge friction compared with `.agents` files alone. |
 
-**Metrics:** We will use surveys (post-experiment) to ask users how much value they gained. Tools like Hotjar or simple Google Forms can capture “would you be disappointed?” (Curtis-Yu measure). Usage logs (with user consent) will track actual tool calls. The goal is to see meaningful adoption in a realistic setting, not just toy usage. 
+**Metrics:** Track cross-teammate reuse events, repeated-loop avoidance, published learning count, accepted/rejected memory diffs, conflicts, stale/contradicted updates, and token overhead. The goal is to see whether shared project memory changes agent behavior in real team work, not whether another memory system can be built.
 
 ## 12. Monetization & Distribution Strategies
 
@@ -527,10 +572,11 @@ This shows the **two-way flow**: agents *propose*, users *approve/reject*.
 
 1. **Run live MCP inspector/client validation:** This is the highest-priority release gate. Exercise every tool and both resources from target MCP hosts and the inspector, beyond the automated SDK/raw/package stdio coverage.
 2. **Run a real Google Drive sync smoke test:** This is next because the repo still advertises optional Drive sync. Use `npm run smoke:gdrive` with a credentialed folder to validate upload/update behavior, error messaging, and path assumptions.
-3. **Recruit early users for PMF validation:** After technical release gates are green, run the experiment plan below to measure actual context-tool usage, review flow usage, and retention.
-4. **Validate mobile field guidance and refine product guidance:** Use the mobile cohort to answer sync/conflict questions, then adjust README, skill instructions, onboarding, and sync guidance based on real friction points.
-5. **Cut the first beta release after local and host gates are green:** Tag and publish a beta only if unvalidated workflows are labeled accordingly.
-6. **Cut the full public release after the first four items are green:** Announce a broad release only after the technical and field-validation priorities above are complete.
+3. **Run skill-first team memory validation:** Before expanding the MCP product, test the `.agents`/`AGENTS.md` team-memory workflow with real project teams. Prove teammate-to-teammate reuse and measure token overhead.
+4. **Decide whether MCP indexing is justified:** Build the search/index/publish MCP layer only if skill-first memory becomes too large, inconsistent, or conflict-prone.
+5. **Validate mobile field guidance only after the team-memory direction is clear:** Mobile should remain secondary until project-team memory proves value.
+6. **Cut the first beta release after local and host gates are green:** Tag and publish a beta only if unvalidated workflows are labeled accordingly.
+7. **Cut the full public release after the technical and field-validation items are green:** Announce a broad release only after the technical and PMF priorities above are complete.
 
 The build work is largely complete. The next steps are now about proving the implementation in real environments and refining the product around actual usage.
 
@@ -540,9 +586,10 @@ For release readiness, the remaining work should be tackled in this order:
 
 1. **Cross-client MCP host validation**
 2. **Google Drive live validation**
-3. **PMF field validation**
-4. **Mobile field validation**
-5. **Release cutover**
+3. **Skill-first team PMF validation**
+4. **MCP indexing escalation decision**
+5. **Mobile field validation**
+6. **Release cutover**
 
 ## 16. Parallel Execution Tracks
 
@@ -552,7 +599,7 @@ The remaining work can now be executed in parallel with minimal merge risk by ke
 |-------|------|--------------------|--------|------------|
 | **Track A: Validation automation alignment** | Keep repo automation aligned with the documented smoke surface | `package.json`, `.github/workflows/ci.yml`, validation docs | Consistent local and CI gates | Existing smoke scripts |
 | **Track B: External validation runbooks** | Make host/client and Google Drive live validation executable by any operator | `docs/host-validation.md`, `docs/gdrive-live-validation.md` | Host matrix, Drive runbook, evidence checklist | Existing smoke scripts |
-| **Track C: PMF and field operations** | Convert product/PMF/release uncertainty into operational checklists | `docs/pmf-validation.md`, `docs/mobile-sync-guidance.md`, `docs/release-gate.md` | Cohort plan, mobile guidance, release gate | Existing roadmap + validation outputs |
+| **Track C: Skill-first PMF and field operations** | Validate team project memory as `.agents`/`AGENTS.md` workflow before MCP expansion | `docs/pmf-validation.md`, `docs/team-project-memory-v1.md`, `docs/team-project-memory-pmf-implementation.md`, `docs/release-gate.md` | Team-memory cohort plan, escalation criteria, release gate | Existing roadmap + validation outputs |
 
 Recommended execution order inside the parallel wave:
 

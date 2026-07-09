@@ -1970,6 +1970,118 @@ npm publish --dry-run --access public
 
 ---
 
+## P11 — Skill-first team project memory validation
+
+**Goal:** Validate the product as a team memory skill and repo convention before expanding MCP runtime scope.
+
+This phase intentionally avoids new MCP server features unless the skill-first workflow proves a concrete limitation.
+
+### Files to create/modify
+
+**`skills/team-project-memory/SKILL.md`**
+
+- Additive coordination skill for the team-memory workflow.
+- Explicitly reads repo instructions before shared memory.
+- Never overwrites existing project context files.
+- Delegates conflicts to reviewable git updates.
+
+**`.agents/project-memory/topics/`** in a validation project:
+
+```text
+.agents/
+  project-memory/
+    README.md
+    topics/
+      <topic>.md
+```
+
+**`AGENTS.md`** in a validation project:
+
+- Instruct agents to read `.agents/project-memory/README.md` before meaningful exploration.
+- Instruct agents to search topic files by problem signature, error text, command, and file path.
+- Instruct agents to publish one short session learning when a task, failed attempt, or solved sub-problem completes.
+- Instruct agents to avoid overwriting or deleting evidence.
+- Instruct agents to create a branch/PR or patch when a memory update is conflicting.
+
+**Memory item format**
+
+```md
+## <problem signature>
+
+- status: candidate | validated | contradicted | stale
+- confidence: 0.00-1.00
+- confidence_label: low | medium | high
+- applies_to: <repo/project/path/tool/runtime>
+- worked: <confirmed approach, or none>
+- failed_attempts: <non-working approaches>
+- evidence: <tests/build/user confirmation/agent observation/reuse result>
+- source_session: <agent/client/session/thread>
+- last_validated: <ISO date>
+- next_reuse_instruction: <what the next teammate's agent should try or avoid>
+```
+
+### Validation flow
+
+1. Teammate A runs a real agent session.
+2. The agent publishes one short structured learning into `.agents/project-memory/topics/`.
+3. Teammate B starts a separate agent session or uses a separate machine.
+4. Teammate B's agent reads/searches the shared memory before exploring.
+5. The operator records whether teammate B avoided a failed path or reused a validated fix.
+
+### Verification: P11 done when
+
+- At least two project teams complete the validation flow.
+- At least two cross-teammate reuse events are documented.
+- At least one auto-published learning is reviewed through git.
+- Published learnings stay under 250 words unless explicitly justified.
+- No memory update silently deletes evidence or failed attempts.
+
+---
+
+## P12 — Conditional MCP retrieval and publish layer
+
+**Goal:** Build MCP search/index/publish only if P11 proves that repo-file memory alone is insufficient.
+
+Trigger P12 only if one or more of these happen during P11:
+
+- topic files become too large to load cheaply
+- agents inconsistently search or update `.agents` memory
+- duplicate/contradictory items become common
+- teams need one memory repo across multiple project repos
+- conflict handling through plain git becomes too slow
+
+### Scope
+
+Add these MCP tools:
+
+| Tool | Purpose |
+|------|---------|
+| `find_session_learnings` | Return compact matching memory summaries. |
+| `fetch_session_learning` | Fetch full evidence for one memory item on demand. |
+| `publish_session_learning` | Publish or merge a short structured learning. |
+| `sync_memory_repo` | Pull/fetch the shared memory repo explicitly. |
+| `get_memory_sync_status` | Report `fresh`, `stale`, `dirty`, `conflict`, or `offline`. |
+
+### Architecture
+
+- Git markdown remains canonical.
+- The MCP server keeps a disposable local index under a cache directory.
+- Startup sync is bounded by timeout and must not block the server indefinitely.
+- Search returns summaries first and evidence only on demand.
+- Direct publish is allowed only for non-conflicting structured updates.
+- Conflicts become pending patches or PRs.
+
+### Verification: P12 done when
+
+- Two local roots simulate two teammate machines against the same memory repo.
+- Teammate A publishes through MCP.
+- Teammate B syncs and finds the item through `find_session_learnings`.
+- `fetch_session_learning` returns full evidence only for a selected item.
+- A conflicting update creates a pending patch or review branch instead of silently merging.
+- Search result output remains bounded by the token limits in `docs/team-project-memory-pmf-implementation.md`.
+
+---
+
 ## Phase completion checklist
 
 | Phase | Gate command | Expected outcome |
@@ -1984,5 +2096,7 @@ npm publish --dry-run --access public
 | P8 | Manual git smoke | Sync commit visible in bare remote |
 | P9 | MCP inspector + fs check | Legacy tools work; sessions copied |
 | P10 | CI matrix + dry-run | All jobs green; `npm publish --dry-run` clean |
+| P11 | Team-memory field validation | Two teams show cross-teammate reuse with `.agents` memory |
+| P12 | Conditional MCP smoke | Two-root sync/search/publish flow works only if P11 justifies it |
 
 **Cumulative test count by phase:** 0 → 5 → 10 → 18 → 30 → 38 → 38 → 38 → 38 → 38

@@ -1,0 +1,6 @@
+# Repository Instructions for Copilot
+
+- Follow repo-local instructions first.
+- Use `skills/team-project-memory/SKILL.md` as the additive shared-memory coordination layer.
+- Do not overwrite or replace existing project instructions.
+- Keep shared updates short and reviewable.
