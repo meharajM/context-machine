@@ -1,13 +1,13 @@
 ---
 name: team-project-memory
-description: Shared project memory and team knowledge base for AI coding agents. Use when teams using Codex, Claude Code, Cursor, Copilot, Devin, Cline, or other agents need reusable repo learnings, solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions in git without overriding repo-local instructions.
+description: Shared project memory, team knowledge graph, and reusable debugging history for AI coding agents, multi-agent swarms, and developer teams. Use when teams using Codex, Claude Code, Cursor, Copilot, Devin, Cline, or other agents need shared repo learnings, solved bugs, failed attempts, swarm coordination context, confidence, and next-reuse instructions in git without overriding repo-local instructions.
 ---
 
 # Team Project Memory
 
-Use this skill when a team wants shared project learnings that survive across teammates, machines, and agent sessions without replacing the repo’s existing instructions.
+Use this skill when a team wants shared project learnings that survive across teammates, machines, agent sessions, and multi-agent swarm runs without replacing the repo’s existing instructions.
 
-Search terms: team memory, project memory, shared AI memory, agent knowledge base, repo learnings, debugging history, failed attempts, solved issues, onboarding context, multi-agent development.
+Search terms: team memory, project memory, shared AI memory, agent knowledge base, shared knowledge graph, repo learnings, debugging history, failed attempts, solved issues, onboarding context, multi-agent development, agent swarms, AI swarm memory, swarm coordination, multi-agent collaboration.
 
 ## Purpose
 
@@ -37,8 +37,9 @@ When this skill is installed globally or at the project level:
 
 ## When To Use
 
-- A project team uses multiple AI agents or multiple teammate machines.
+- A project team uses multiple AI agents, agent swarms, or multiple teammate machines.
 - The team needs repeated debugging paths, failed approaches, and validated fixes captured once and reused by others.
+- Multiple specialized agents need the same project knowledge before exploring, coding, reviewing, testing, or debugging.
 - The team wants a repo-based memory layer without introducing a hosted service.
 - The team wants an optional path to MCP later, but not as the first dependency.
 

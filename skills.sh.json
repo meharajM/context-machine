@@ -4,7 +4,7 @@
   "groupings": [
     {
       "title": "Team Project Memory",
-      "description": "Shared project memory and reusable team learnings for AI coding agents working across repositories, machines, and teammates.",
+      "description": "Shared project memory and reusable team knowledge graph for developer teams, AI coding agents, and multi-agent swarms working across repositories, machines, and teammates.",
       "skills": [
         "team-project-memory"
       ]

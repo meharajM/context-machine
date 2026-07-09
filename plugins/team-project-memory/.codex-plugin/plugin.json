@@ -1,7 +1,7 @@
 {
   "name": "team-project-memory",
   "version": "0.1.1",
-  "description": "Shared project memory and team knowledge base for AI coding agents",
+  "description": "Shared project memory and team knowledge graph for developer teams, AI coding agents, and multi-agent swarms",
   "author": {
     "name": "meharajM",
     "url": "https://github.com/meharajM"
@@ -15,6 +15,14 @@
     "project-memory",
     "shared-memory",
     "agent-memory",
+    "swarm-memory",
+    "multi-agent-memory",
+    "multi-agent-collaboration",
+    "agent-swarms",
+    "swarm-coordination",
+    "developer-team-memory",
+    "team-knowledge-graph",
+    "project-knowledge-graph",
     "ai-memory",
     "codex",
     "claude-code",
@@ -25,14 +33,19 @@
     "skills",
     "knowledge-base",
     "agent-knowledge-base",
+    "shared-knowledge-graph",
     "debugging",
+    "debugging-history",
+    "failed-attempts",
+    "solved-bugs",
+    "repo-learnings",
     "repo-context"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Team Project Memory",
-    "shortDescription": "Shared project memory for AI agent teams",
-    "longDescription": "Skill-first, git-backed project memory for teams using AI coding agents. Captures solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions without overriding repo-local instructions.",
+    "shortDescription": "Shared project memory for dev teams, agents, and swarms",
+    "longDescription": "Skill-first, git-backed project memory and team knowledge graph for developer teams using AI coding agents or multi-agent swarms. Captures solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions without overriding repo-local instructions.",
     "developerName": "meharajM",
     "category": "Productivity",
     "capabilities": [
@@ -44,7 +57,7 @@
     "logo": "./assets/icon.svg",
     "defaultPrompt": [
       "Use Team Project Memory to capture solved bugs and reusable team learnings.",
-      "Reuse prior debugging paths across Codex, Claude Code, Cursor, Copilot, Devin, and Cline."
+      "Share prior debugging paths across developer teams, Codex, Claude Code, Cursor, Copilot, Devin, Cline, and multi-agent swarms."
     ]
   }
 }

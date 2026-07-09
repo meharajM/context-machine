@@ -1,8 +1,10 @@
 # Team Project Memory Skill
 
-Shared project memory and team knowledge base for AI coding agents.
+Shared project memory and team knowledge graph for developer teams, AI coding agents, and multi-agent swarms.
 
-Use this when a team using Codex, Claude Code, Cursor, GitHub Copilot, Devin, Cline, or other agents wants reusable repo learnings, solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions in git without overriding repo-local instructions.
+Use this when a development team, AI agent team, or multi-agent swarm using Codex, Claude Code, Cursor, GitHub Copilot, Devin, Cline, or other agents wants reusable repo learnings, solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions in git without overriding repo-local instructions.
+
+Search terms: team project memory, developer team memory, shared AI memory, multi-agent memory, agent swarm memory, swarm coordination, shared knowledge graph, project knowledge graph, repo learnings, debugging history, failed attempts, solved bugs.
 
 The v1 product is skill-first. It does not require the ContextEngine MCP server.
 
@@ -43,7 +45,7 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --method git
 ```
 
-This is the recommended v1 path. The skill is the product surface for team project memory; it does not require the ContextEngine MCP server.
+This is the recommended v1 path. The skill is the product surface for team project memory and multi-agent project knowledge sharing; it does not require the ContextEngine MCP server.
 
 Optional Codex plugin install from this repo:
 

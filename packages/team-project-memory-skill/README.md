@@ -1,8 +1,10 @@
 # Team Project Memory Skill
 
-Shared project memory and team knowledge base for AI coding agents.
+Shared project memory and team knowledge graph for developer teams, AI coding agents, and multi-agent swarms.
 
-Use this skill when a team using Codex, Claude Code, Cursor, GitHub Copilot, Devin, Cline, or other agents wants reusable repo learnings, solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions in git without overriding repo-local instructions.
+Use this skill when a development team, AI agent team, or multi-agent swarm using Codex, Claude Code, Cursor, GitHub Copilot, Devin, Cline, or other agents wants reusable repo learnings, solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions in git without overriding repo-local instructions.
+
+Search terms: team project memory, developer team memory, shared AI memory, multi-agent memory, agent swarm memory, swarm coordination, shared knowledge graph, project knowledge graph, repo learnings, debugging history, failed attempts, solved bugs.
 
 ## Install
 
@@ -32,6 +34,8 @@ npx skills add meharajM/context-machine --list
 - Solved bugs and verified fixes
 - Failed attempts and dead ends
 - Debugging paths that should not be repeated
+- Multi-agent and swarm coordination context
+- Shared project knowledge graph entries
 - Confidence and validation evidence
 - Next-reuse instructions for teammate agents
 

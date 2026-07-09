@@ -1,10 +1,10 @@
 interface:
   display_name: "Team Project Memory"
-  short_description: "Shared project memory for AI agent teams"
+  short_description: "Shared project memory for dev teams, agents, and swarms"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#2563EB"
-  default_prompt: "Use $team-project-memory to capture solved bugs, failed attempts, and reusable team learnings without overwriting repo instructions."
+  default_prompt: "Use $team-project-memory to share solved bugs, failed attempts, and reusable project context across developer teams, AI agents, and multi-agent swarms without overwriting repo instructions."
 
 policy:
   allow_implicit_invocation: true
