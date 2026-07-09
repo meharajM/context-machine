@@ -1,0 +1,38 @@
+{
+  "name": "team-project-memory",
+  "version": "0.1.0",
+  "description": "Additive team-shared project memory for AI agents",
+  "author": {
+    "name": "meharajM",
+    "url": "https://github.com/meharajM"
+  },
+  "homepage": "https://github.com/meharajM/context-machine",
+  "repository": "https://github.com/meharajM/context-machine",
+  "license": "MIT",
+  "keywords": [
+    "ai-agents",
+    "team-memory",
+    "codex",
+    "skills",
+    "knowledge-base"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Team Project Memory",
+    "shortDescription": "Shared team learnings for agent workflows",
+    "longDescription": "Additive, git-backed team memory that captures validated learnings, failed attempts, confidence, and next-reuse instructions without overriding repo-local instructions.",
+    "developerName": "meharajM",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "brandColor": "#2563EB",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg",
+    "defaultPrompt": [
+      "Use Team Project Memory to capture validated team learnings.",
+      "Reuse prior debugging paths without overwriting repo instructions."
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "context-machine-team",
+  "interface": {
+    "displayName": "Context Machine Team"
+  },
+  "plugins": [
+    {
+      "name": "team-project-memory",
+      "source": {
+        "source": "local",
+        "path": "./plugins/team-project-memory"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

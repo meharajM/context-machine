@@ -1,0 +1,10 @@
+interface:
+  display_name: "Team Project Memory"
+  short_description: "Shared team learnings for agent workflows"
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#2563EB"
+  default_prompt: "Use $team-project-memory to capture and reuse team project learnings without overwriting repo instructions."
+
+policy:
+  allow_implicit_invocation: true
