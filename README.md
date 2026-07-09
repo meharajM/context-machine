@@ -18,7 +18,26 @@ npx -y @mhrj/contextengine-mcp
 
 This repo also ships `team-project-memory`, an additive skill for sharing project learnings across team members and AI agents without replacing repo-local instructions.
 
-Install the repo-backed Codex marketplace:
+Install the skill directly with Codex Skill Installer:
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo meharajM/context-machine \
+  --path skills/team-project-memory
+```
+
+If the direct GitHub download path fails because of local Python certificate setup, use the installer git fallback:
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo meharajM/context-machine \
+  --path skills/team-project-memory \
+  --method git
+```
+
+This is the recommended v1 path. The skill is the product surface for team project memory; it does not require the ContextEngine MCP server.
+
+Optional Codex plugin install from this repo:
 
 ```bash
 codex plugin marketplace add meharajM/context-machine --ref main
@@ -33,6 +52,8 @@ codex plugin add team-project-memory@context-machine-team
 ```
 
 After installing, start a new Codex thread so the skill list refreshes.
+
+The npm package below is for the existing ContextEngine MCP server. Team Project Memory can be used without installing or running that MCP server.
 
 ## MCP config
 

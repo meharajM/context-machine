@@ -10,7 +10,26 @@ This repo now treats team project memory as a layered system:
 
 ## Install Shape
 
-Codex plugin install from GitHub:
+Recommended skill-only install with Codex Skill Installer:
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo meharajM/context-machine \
+  --path skills/team-project-memory
+```
+
+Fallback if direct GitHub download fails locally:
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo meharajM/context-machine \
+  --path skills/team-project-memory \
+  --method git
+```
+
+This is the v1 product path. It installs only the skill and does not require the ContextEngine MCP server.
+
+Optional Codex plugin install from GitHub:
 
 ```bash
 codex plugin marketplace add meharajM/context-machine --ref main
@@ -28,6 +47,7 @@ Recommended global install:
 
 - install the `Team Project Memory` skill globally
 - leave existing repo instructions unchanged
+- do not require MCP for v1 team-memory usage
 
 Recommended project install:
 
