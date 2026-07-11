@@ -1,8 +1,8 @@
 {
   "name": "@mhrj/team-project-memory-skill",
   "version": "0.2.0",
-  "description": "Token-efficient shared project memory skills for retrieval, capture, and maintenance across developers and AI agents",
-  "homepage": "https://github.com/meharajM/context-machine",
+  "description": "Token-efficient open Agent Skills for shared project-memory retrieval, capture, and maintenance",
+  "homepage": "https://skills.sh/meharajM/context-machine",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/meharajM/context-machine.git",
@@ -13,7 +13,8 @@
   },
   "files": [
     "README.md",
-    "skills"
+    "skills",
+    "LICENSE"
   ],
   "keywords": [
     "ai-agents",

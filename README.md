@@ -1,69 +1,81 @@
-# Team Project Memory Skill
+# Team Project Memory Skills
 
-Shared project memory and team knowledge graph for developer teams, AI coding agents, and multi-agent swarms.
+[![skills.sh](https://skills.sh/b/meharajM/context-machine)](https://skills.sh/meharajM/context-machine)
+[![Agent Skills](https://img.shields.io/badge/Agent%20Skills-open%20standard-111827)](https://agentskills.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Use this when a development team, AI agent team, or multi-agent swarm using Codex, Claude Code, Cursor, GitHub Copilot, Devin, Cline, or other agents wants reusable repo learnings, solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions in git without overriding repo-local instructions.
+Four token-efficient, git-backed Agent Skills that help developers and AI coding agents reuse project knowledge instead of repeating investigation.
 
-Search terms: team project memory, developer team memory, shared AI memory, multi-agent memory, agent swarm memory, swarm coordination, shared knowledge graph, project knowledge graph, repo learnings, debugging history, failed attempts, solved bugs.
+| Skill | Purpose | Implicit use |
+|---|---|---:|
+| `team-project-memory` | Routes a task to the smallest specialized memory skill | Yes |
+| `team-memory-search` | Searches validated project learnings before investigation | Yes, read-only |
+| `team-memory-capture` | Drafts compact verified reusable learnings | No |
+| `team-memory-maintenance` | Sets up and maintains the shared memory store | No |
 
-The v1 product is skill-first. It does not require the ContextEngine MCP server.
+These skills follow the open [Agent Skills specification](https://agentskills.io/specification) and do not require the optional ContextEngine MCP server.
 
 ## Install
 
-Install the skill-only npm package for discovery:
-
-```bash
-npm view @mhrj/team-project-memory-skill
-```
-
-Install all four memory skills for all supported local agents:
-
-```bash
-npx skills add meharajM/context-machine --skill '*' --agent '*' -g -y
-```
-
-List the available skills in this repo:
+### List the repository's skills
 
 ```bash
 npx skills add meharajM/context-machine --list
 ```
 
-Install the skill directly with Codex Skill Installer:
+### Install all four skills for all supported agents
 
 ```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo meharajM/context-machine \
-  --path skills/team-project-memory
+npx skills add meharajM/context-machine --all
 ```
 
-If the direct GitHub download path fails because of local Python certificate setup, use the installer git fallback:
+### Install all four skills for Codex
 
 ```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo meharajM/context-machine \
-  --path skills/team-project-memory \
-  --method git
+npx skills add meharajM/context-machine --skill '*' --agent codex -g -y
 ```
 
-This is the recommended v1 path. The skill is the product surface for team project memory and multi-agent project knowledge sharing; it does not require the ContextEngine MCP server.
+### Install one skill
 
-Optional Codex plugin install from this repo:
+```bash
+npx skills add meharajM/context-machine --skill team-memory-search --agent codex -g -y
+```
+
+### Use without installing
+
+```bash
+npx skills use meharajM/context-machine --skill team-memory-search --agent codex
+```
+
+## Discover
+
+After the repository has been seen by skills.sh telemetry:
+
+- Repository page: <https://skills.sh/meharajM/context-machine>
+- Search: `npx skills find team-memory --owner meharajM`
+
+The skills.sh index is telemetry-driven and cached, so first-time search results can appear after the initial installation rather than immediately.
+
+## Codex plugin bundle
+
+Install all four skills as one Codex plugin:
 
 ```bash
 codex plugin marketplace add meharajM/context-machine --ref main
 codex plugin add team-project-memory@context-machine-team
 ```
 
-For local development against this checkout:
+After installation, start a new Codex thread so the skill list refreshes.
+
+## Skill-only npm package
+
+The optional npm discovery package mirrors the same four skills:
 
 ```bash
-codex plugin marketplace add /Users/meharaj/context-machine
-codex plugin add team-project-memory@context-machine-team
+npm view @mhrj/team-project-memory-skill
 ```
 
-After installing, start a new Codex thread so the skill list refreshes.
-
-The npm package below is for the existing ContextEngine MCP server. Team Project Memory can be used without installing or running that MCP server.
+Current repository package version: `0.2.0`.
 
 ## Optional ContextEngine MCP
 

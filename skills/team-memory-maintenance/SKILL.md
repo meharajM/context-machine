@@ -1,6 +1,11 @@
 ---
 name: team-memory-maintenance
 description: Initialize or maintain a git-backed shared project-memory store, including policy, layout, deduplication, contradictions, staleness, retention, and conflict-safe publishing.
+license: MIT
+metadata:
+  author: meharajM
+  version: "0.2.0"
+  repository: meharajM/context-machine
 ---
 
 # Team Memory Maintenance

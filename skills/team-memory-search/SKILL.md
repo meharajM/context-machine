@@ -1,6 +1,11 @@
 ---
 name: team-memory-search
 description: Search shared project memory before repeating debugging, setup, build, test, deployment, performance, or architecture investigation already attempted by another developer or agent.
+license: MIT
+metadata:
+  author: meharajM
+  version: "0.2.0"
+  repository: meharajM/context-machine
 ---
 
 # Team Memory Search

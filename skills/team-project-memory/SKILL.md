@@ -1,6 +1,11 @@
 ---
 name: team-project-memory
 description: Route shared project-memory work to the smallest specialized skill. Use when configuring, using, reviewing, or improving reusable knowledge shared across developers, agents, sessions, or machines.
+license: MIT
+metadata:
+  author: meharajM
+  version: "0.2.0"
+  repository: meharajM/context-machine
 ---
 
 # Team Project Memory Router

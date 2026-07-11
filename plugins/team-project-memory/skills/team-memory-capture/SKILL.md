@@ -1,6 +1,11 @@
 ---
 name: team-memory-capture
 description: Capture a short reusable project learning after a non-obvious fix, failed approach, setup requirement, decision, or debugging path is verified and likely to save another agent time or tokens.
+license: MIT
+metadata:
+  author: meharajM
+  version: "0.2.0"
+  repository: meharajM/context-machine
 ---
 
 # Team Memory Capture

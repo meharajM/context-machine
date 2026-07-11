@@ -1,0 +1,60 @@
+name: Agent Skills
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skills/**"
+      - "packages/team-project-memory-skill/**"
+      - "plugins/team-project-memory/**"
+      - "scripts/validate-agent-skills.py"
+      - "skills.sh.json"
+      - ".github/workflows/agent-skills.yml"
+  pull_request:
+    paths:
+      - "skills/**"
+      - "packages/team-project-memory-skill/**"
+      - "plugins/team-project-memory/**"
+      - "scripts/validate-agent-skills.py"
+      - "skills.sh.json"
+      - ".github/workflows/agent-skills.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate frontmatter and mirrors
+        run: python3 scripts/validate-agent-skills.py
+
+      - name: Verify Skills CLI discovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes skills@latest add . --list | tee /tmp/skills-list.txt
+          for skill in \
+            team-project-memory \
+            team-memory-search \
+            team-memory-capture \
+            team-memory-maintenance
+          do
+            grep -q "$skill" /tmp/skills-list.txt
+          done
+
+      - name: Verify npm package contents
+        working-directory: packages/team-project-memory-skill
+        run: npm pack --dry-run

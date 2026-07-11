@@ -1,12 +1,12 @@
 {
   "name": "team-project-memory",
   "version": "0.2.0",
-  "description": "Token-efficient shared project memory skills for developer teams and AI agents",
+  "description": "Token-efficient open Agent Skills for shared project memory",
   "author": {
     "name": "meharajM",
     "url": "https://github.com/meharajM"
   },
-  "homepage": "https://github.com/meharajM/context-machine",
+  "homepage": "https://skills.sh/meharajM/context-machine",
   "repository": "https://github.com/meharajM/context-machine",
   "license": "MIT",
   "keywords": [
