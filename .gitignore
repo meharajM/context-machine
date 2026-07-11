@@ -5,3 +5,5 @@ build/
 *.tmp.*
 coverage/
 *.tgz
+
+.DS_Store

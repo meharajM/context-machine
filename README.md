@@ -16,10 +16,10 @@ Install the skill-only npm package for discovery:
 npm view @mhrj/team-project-memory-skill
 ```
 
-Install with the open Skills CLI for all supported local agents:
+Install all four memory skills for all supported local agents:
 
 ```bash
-npx skills add meharajM/context-machine --skill team-project-memory --agent '*' -g -y
+npx skills add meharajM/context-machine --skill '*' --agent '*' -g -y
 ```
 
 List the available skills in this repo:

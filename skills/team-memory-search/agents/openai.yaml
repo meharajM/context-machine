@@ -1,0 +1,7 @@
+interface:
+  display_name: "Team Memory Search"
+  short_description: "Reuse prior project solutions first"
+  default_prompt: "Use $team-memory-search before repeating this investigation."
+
+policy:
+  allow_implicit_invocation: true

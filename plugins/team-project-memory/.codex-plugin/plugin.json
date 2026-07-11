@@ -1,7 +1,7 @@
 {
   "name": "team-project-memory",
-  "version": "0.1.1",
-  "description": "Shared project memory and team knowledge graph for developer teams, AI coding agents, and multi-agent swarms",
+  "version": "0.2.0",
+  "description": "Token-efficient shared project memory skills for developer teams and AI agents",
   "author": {
     "name": "meharajM",
     "url": "https://github.com/meharajM"
@@ -15,49 +15,41 @@
     "project-memory",
     "shared-memory",
     "agent-memory",
-    "swarm-memory",
     "multi-agent-memory",
-    "multi-agent-collaboration",
     "agent-swarms",
-    "swarm-coordination",
-    "developer-team-memory",
     "team-knowledge-graph",
-    "project-knowledge-graph",
-    "ai-memory",
+    "knowledge-base",
+    "debugging",
+    "debugging-history",
+    "failed-attempts",
+    "solved-bugs",
+    "repo-learnings",
+    "token-efficiency",
     "codex",
     "claude-code",
     "cursor",
     "copilot",
     "devin",
     "cline",
-    "skills",
-    "knowledge-base",
-    "agent-knowledge-base",
-    "shared-knowledge-graph",
-    "debugging",
-    "debugging-history",
-    "failed-attempts",
-    "solved-bugs",
-    "repo-learnings",
-    "repo-context"
+    "skills"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Team Project Memory",
-    "shortDescription": "Shared project memory for dev teams, agents, and swarms",
-    "longDescription": "Skill-first, git-backed project memory and team knowledge graph for developer teams using AI coding agents or multi-agent swarms. Captures solved bugs, failed attempts, debugging paths, confidence, and next-reuse instructions without overriding repo-local instructions.",
+    "shortDescription": "Reuse solutions before spending tokens",
+    "longDescription": "Small routed skills that search prior project solutions, capture verified learnings, and maintain a conflict-safe git memory store.",
     "developerName": "meharajM",
     "category": "Productivity",
     "capabilities": [
       "Read",
       "Write"
     ],
+    "defaultPrompt": [
+      "Search team memory before repeating investigation.",
+      "Capture only verified reusable learnings."
+    ],
     "brandColor": "#2563EB",
     "composerIcon": "./assets/icon.svg",
-    "logo": "./assets/icon.svg",
-    "defaultPrompt": [
-      "Use Team Project Memory to capture solved bugs and reusable team learnings.",
-      "Share prior debugging paths across developer teams, Codex, Claude Code, Cursor, Copilot, Devin, Cline, and multi-agent swarms."
-    ]
+    "logo": "./assets/icon.svg"
   }
 }

@@ -4,9 +4,12 @@
   "groupings": [
     {
       "title": "Team Project Memory",
-      "description": "Shared project memory and reusable team knowledge graph for developer teams, AI coding agents, and multi-agent swarms working across repositories, machines, and teammates.",
+      "description": "Token-efficient shared project memory split into routing, retrieval, capture, and maintenance skills.",
       "skills": [
-        "team-project-memory"
+        "team-project-memory",
+        "team-memory-search",
+        "team-memory-capture",
+        "team-memory-maintenance"
       ]
     }
   ]

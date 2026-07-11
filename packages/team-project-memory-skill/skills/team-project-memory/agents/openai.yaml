@@ -1,10 +1,10 @@
 interface:
   display_name: "Team Project Memory"
-  short_description: "Shared project memory for dev teams, agents, and swarms"
+  short_description: "Route shared memory work efficiently"
   icon_small: "./assets/icon.svg"
   icon_large: "./assets/icon.svg"
   brand_color: "#2563EB"
-  default_prompt: "Use $team-project-memory to share solved bugs, failed attempts, and reusable project context across developer teams, AI agents, and multi-agent swarms without overwriting repo instructions."
+  default_prompt: "Use $team-project-memory to route this task to the smallest shared-memory skill."
 
 policy:
   allow_implicit_invocation: true

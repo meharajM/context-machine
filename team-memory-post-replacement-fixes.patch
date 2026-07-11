@@ -1,0 +1,308 @@
+diff --git a/README.md b/README.md
+index 1db052c..2c78755 100644
+--- a/README.md
++++ b/README.md
+@@ -16,10 +16,10 @@ Install the skill-only npm package for discovery:
+ npm view @mhrj/team-project-memory-skill
+ ```
+ 
+-Install with the open Skills CLI for all supported local agents:
++Install all four memory skills for all supported local agents:
+ 
+ ```bash
+-npx skills add meharajM/context-machine --skill team-project-memory --agent '*' -g -y
++npx skills add meharajM/context-machine --skill '*' --agent '*' -g -y
+ ```
+ 
+ List the available skills in this repo:
+diff --git a/TEAM_MEMORY_SKILLS.md b/TEAM_MEMORY_SKILLS.md
+index d4709b7..245620b 100644
+--- a/TEAM_MEMORY_SKILLS.md
++++ b/TEAM_MEMORY_SKILLS.md
+@@ -10,7 +10,7 @@ Four small skills prevent developers and AI agents from repeatedly solving the s
+ ## Install all skills
+ 
+ ```bash
+-npx skills add meharajM/context-machine --agent '*' -g -y
++npx skills add meharajM/context-machine --skill '*' --agent '*' -g -y
+ ```
+ 
+ List discovered skills:
+diff --git a/packages/team-project-memory-skill/README.md b/packages/team-project-memory-skill/README.md
+index d4709b7..245620b 100644
+--- a/packages/team-project-memory-skill/README.md
++++ b/packages/team-project-memory-skill/README.md
+@@ -10,7 +10,7 @@ Four small skills prevent developers and AI agents from repeatedly solving the s
+ ## Install all skills
+ 
+ ```bash
+-npx skills add meharajM/context-machine --agent '*' -g -y
++npx skills add meharajM/context-machine --skill '*' --agent '*' -g -y
+ ```
+ 
+ List discovered skills:
+diff --git a/packages/team-project-memory-skill/package.json b/packages/team-project-memory-skill/package.json
+index 54dd645..18b0681 100644
+--- a/packages/team-project-memory-skill/package.json
++++ b/packages/team-project-memory-skill/package.json
+@@ -17,19 +17,30 @@
+   ],
+   "keywords": [
+     "ai-agents",
++    "agent-skills",
++    "ai-agent-skills",
++    "skills",
++    "skills-sh",
+     "team-memory",
+     "project-memory",
+     "shared-memory",
++    "agent-memory",
++    "multi-agent-memory",
++    "agent-swarms",
++    "team-knowledge-graph",
++    "knowledge-base",
++    "debugging",
+     "debugging-history",
+     "failed-attempts",
++    "solved-bugs",
++    "repo-learnings",
+     "token-efficiency",
+     "codex",
+     "claude-code",
+     "cursor",
+     "copilot",
+     "devin",
+-    "cline",
+-    "skills"
++    "cline"
+   ],
+   "author": "mhrj",
+   "license": "MIT"
+diff --git a/packages/team-project-memory-skill/skills/team-project-memory/agents/openai.yaml b/packages/team-project-memory-skill/skills/team-project-memory/agents/openai.yaml
+index c75c88c..98b711d 100644
+--- a/packages/team-project-memory-skill/skills/team-project-memory/agents/openai.yaml
++++ b/packages/team-project-memory-skill/skills/team-project-memory/agents/openai.yaml
+@@ -1,6 +1,9 @@
+ interface:
+   display_name: "Team Project Memory"
+   short_description: "Route shared memory work efficiently"
++  icon_small: "./assets/icon.svg"
++  icon_large: "./assets/icon.svg"
++  brand_color: "#2563EB"
+   default_prompt: "Use $team-project-memory to route this task to the smallest shared-memory skill."
+ 
+ policy:
+diff --git a/packages/team-project-memory-skill/skills/team-project-memory/assets/icon.svg b/packages/team-project-memory-skill/skills/team-project-memory/assets/icon.svg
+new file mode 100644
+index 0000000..b649a90
+--- /dev/null
++++ b/packages/team-project-memory-skill/skills/team-project-memory/assets/icon.svg
+@@ -0,0 +1,9 @@
++<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
++  <rect x="28" y="28" width="200" height="200" rx="48" fill="#2563EB"/>
++  <path d="M76 88H180" stroke="white" stroke-width="18" stroke-linecap="round"/>
++  <path d="M76 128H164" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
++  <path d="M76 168H148" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.8"/>
++  <path d="M176 168C188.15 168 198 158.15 198 146C198 133.85 188.15 124 176 124C163.85 124 154 133.85 154 146C154 158.15 163.85 168 176 168Z" fill="white"/>
++  <path d="M176 168V200" stroke="white" stroke-width="18" stroke-linecap="round"/>
++  <circle cx="176" cy="146" r="9" fill="#2563EB"/>
++</svg>
+diff --git a/packages/team-project-memory-skill/skills/team-project-memory/references/publish-surfaces.md b/packages/team-project-memory-skill/skills/team-project-memory/references/publish-surfaces.md
+new file mode 100644
+index 0000000..48242eb
+--- /dev/null
++++ b/packages/team-project-memory-skill/skills/team-project-memory/references/publish-surfaces.md
+@@ -0,0 +1,21 @@
++# Published Skill Surfaces
++
++The canonical skills are:
++
++- `skills/team-project-memory/`
++- `skills/team-memory-search/`
++- `skills/team-memory-capture/`
++- `skills/team-memory-maintenance/`
++
++They are mirrored into:
++
++- `packages/team-project-memory-skill/skills/`
++- `plugins/team-project-memory/skills/`
++
++Rules:
++
++- Make behavioral changes in the canonical root skills first.
++- Keep package and plugin mirrors identical to the canonical skills.
++- Never overwrite repository-local instructions such as `AGENTS.md`,
++  `CLAUDE.md`, or `.github/copilot-instructions.md`.
++- Keep retrieval read-only unless a write is explicitly requested.
+diff --git a/plugins/team-project-memory/.codex-plugin/plugin.json b/plugins/team-project-memory/.codex-plugin/plugin.json
+index be5a59b..74fadf8 100644
+--- a/plugins/team-project-memory/.codex-plugin/plugin.json
++++ b/plugins/team-project-memory/.codex-plugin/plugin.json
+@@ -10,11 +10,28 @@
+   "repository": "https://github.com/meharajM/context-machine",
+   "license": "MIT",
+   "keywords": [
++    "ai-agents",
+     "team-memory",
+     "project-memory",
++    "shared-memory",
+     "agent-memory",
++    "multi-agent-memory",
++    "agent-swarms",
++    "team-knowledge-graph",
++    "knowledge-base",
+     "debugging",
+-    "token-efficiency"
++    "debugging-history",
++    "failed-attempts",
++    "solved-bugs",
++    "repo-learnings",
++    "token-efficiency",
++    "codex",
++    "claude-code",
++    "cursor",
++    "copilot",
++    "devin",
++    "cline",
++    "skills"
+   ],
+   "skills": "./skills/",
+   "interface": {
+@@ -30,6 +47,9 @@
+     "defaultPrompt": [
+       "Search team memory before repeating investigation.",
+       "Capture only verified reusable learnings."
+-    ]
++    ],
++    "brandColor": "#2563EB",
++    "composerIcon": "./assets/icon.svg",
++    "logo": "./assets/icon.svg"
+   }
+ }
+diff --git a/plugins/team-project-memory/assets/icon.svg b/plugins/team-project-memory/assets/icon.svg
+new file mode 100644
+index 0000000..b649a90
+--- /dev/null
++++ b/plugins/team-project-memory/assets/icon.svg
+@@ -0,0 +1,9 @@
++<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
++  <rect x="28" y="28" width="200" height="200" rx="48" fill="#2563EB"/>
++  <path d="M76 88H180" stroke="white" stroke-width="18" stroke-linecap="round"/>
++  <path d="M76 128H164" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
++  <path d="M76 168H148" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.8"/>
++  <path d="M176 168C188.15 168 198 158.15 198 146C198 133.85 188.15 124 176 124C163.85 124 154 133.85 154 146C154 158.15 163.85 168 176 168Z" fill="white"/>
++  <path d="M176 168V200" stroke="white" stroke-width="18" stroke-linecap="round"/>
++  <circle cx="176" cy="146" r="9" fill="#2563EB"/>
++</svg>
+diff --git a/plugins/team-project-memory/skills/team-project-memory/agents/openai.yaml b/plugins/team-project-memory/skills/team-project-memory/agents/openai.yaml
+index c75c88c..98b711d 100644
+--- a/plugins/team-project-memory/skills/team-project-memory/agents/openai.yaml
++++ b/plugins/team-project-memory/skills/team-project-memory/agents/openai.yaml
+@@ -1,6 +1,9 @@
+ interface:
+   display_name: "Team Project Memory"
+   short_description: "Route shared memory work efficiently"
++  icon_small: "./assets/icon.svg"
++  icon_large: "./assets/icon.svg"
++  brand_color: "#2563EB"
+   default_prompt: "Use $team-project-memory to route this task to the smallest shared-memory skill."
+ 
+ policy:
+diff --git a/plugins/team-project-memory/skills/team-project-memory/assets/icon.svg b/plugins/team-project-memory/skills/team-project-memory/assets/icon.svg
+new file mode 100644
+index 0000000..b649a90
+--- /dev/null
++++ b/plugins/team-project-memory/skills/team-project-memory/assets/icon.svg
+@@ -0,0 +1,9 @@
++<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
++  <rect x="28" y="28" width="200" height="200" rx="48" fill="#2563EB"/>
++  <path d="M76 88H180" stroke="white" stroke-width="18" stroke-linecap="round"/>
++  <path d="M76 128H164" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
++  <path d="M76 168H148" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.8"/>
++  <path d="M176 168C188.15 168 198 158.15 198 146C198 133.85 188.15 124 176 124C163.85 124 154 133.85 154 146C154 158.15 163.85 168 176 168Z" fill="white"/>
++  <path d="M176 168V200" stroke="white" stroke-width="18" stroke-linecap="round"/>
++  <circle cx="176" cy="146" r="9" fill="#2563EB"/>
++</svg>
+diff --git a/plugins/team-project-memory/skills/team-project-memory/references/publish-surfaces.md b/plugins/team-project-memory/skills/team-project-memory/references/publish-surfaces.md
+new file mode 100644
+index 0000000..48242eb
+--- /dev/null
++++ b/plugins/team-project-memory/skills/team-project-memory/references/publish-surfaces.md
+@@ -0,0 +1,21 @@
++# Published Skill Surfaces
++
++The canonical skills are:
++
++- `skills/team-project-memory/`
++- `skills/team-memory-search/`
++- `skills/team-memory-capture/`
++- `skills/team-memory-maintenance/`
++
++They are mirrored into:
++
++- `packages/team-project-memory-skill/skills/`
++- `plugins/team-project-memory/skills/`
++
++Rules:
++
++- Make behavioral changes in the canonical root skills first.
++- Keep package and plugin mirrors identical to the canonical skills.
++- Never overwrite repository-local instructions such as `AGENTS.md`,
++  `CLAUDE.md`, or `.github/copilot-instructions.md`.
++- Keep retrieval read-only unless a write is explicitly requested.
+diff --git a/skills/team-project-memory/agents/openai.yaml b/skills/team-project-memory/agents/openai.yaml
+index c75c88c..98b711d 100644
+--- a/skills/team-project-memory/agents/openai.yaml
++++ b/skills/team-project-memory/agents/openai.yaml
+@@ -1,6 +1,9 @@
+ interface:
+   display_name: "Team Project Memory"
+   short_description: "Route shared memory work efficiently"
++  icon_small: "./assets/icon.svg"
++  icon_large: "./assets/icon.svg"
++  brand_color: "#2563EB"
+   default_prompt: "Use $team-project-memory to route this task to the smallest shared-memory skill."
+ 
+ policy:
+diff --git a/skills/team-project-memory/assets/icon.svg b/skills/team-project-memory/assets/icon.svg
+new file mode 100644
+index 0000000..b649a90
+--- /dev/null
++++ b/skills/team-project-memory/assets/icon.svg
+@@ -0,0 +1,9 @@
++<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
++  <rect x="28" y="28" width="200" height="200" rx="48" fill="#2563EB"/>
++  <path d="M76 88H180" stroke="white" stroke-width="18" stroke-linecap="round"/>
++  <path d="M76 128H164" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.9"/>
++  <path d="M76 168H148" stroke="white" stroke-width="18" stroke-linecap="round" opacity="0.8"/>
++  <path d="M176 168C188.15 168 198 158.15 198 146C198 133.85 188.15 124 176 124C163.85 124 154 133.85 154 146C154 158.15 163.85 168 176 168Z" fill="white"/>
++  <path d="M176 168V200" stroke="white" stroke-width="18" stroke-linecap="round"/>
++  <circle cx="176" cy="146" r="9" fill="#2563EB"/>
++</svg>
+diff --git a/skills/team-project-memory/references/publish-surfaces.md b/skills/team-project-memory/references/publish-surfaces.md
+new file mode 100644
+index 0000000..48242eb
+--- /dev/null
++++ b/skills/team-project-memory/references/publish-surfaces.md
+@@ -0,0 +1,21 @@
++# Published Skill Surfaces
++
++The canonical skills are:
++
++- `skills/team-project-memory/`
++- `skills/team-memory-search/`
++- `skills/team-memory-capture/`
++- `skills/team-memory-maintenance/`
++
++They are mirrored into:
++
++- `packages/team-project-memory-skill/skills/`
++- `plugins/team-project-memory/skills/`
++
++Rules:
++
++- Make behavioral changes in the canonical root skills first.
++- Keep package and plugin mirrors identical to the canonical skills.
++- Never overwrite repository-local instructions such as `AGENTS.md`,
++  `CLAUDE.md`, or `.github/copilot-instructions.md`.
++- Keep retrieval read-only unless a write is explicitly requested.

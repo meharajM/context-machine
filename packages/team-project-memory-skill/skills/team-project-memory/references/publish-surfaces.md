@@ -1,18 +1,21 @@
-# Publish Surfaces
+# Published Skill Surfaces
 
-This skill is packaged as a set of additive entrypoints. Each surface points back to the same non-overriding team-memory workflow.
+The canonical skills are:
 
-| Surface | File(s) |
-|---------|---------|
-| Codex/OpenAI skill host | `skills/team-project-memory/SKILL.md`, `skills/team-project-memory/agents/openai.yaml`, `skills/team-project-memory/assets/icon.svg` |
-| Repo-level instructions | `AGENTS.md` |
-| Claude Code | `CLAUDE.md` |
-| GitHub Copilot | `.github/copilot-instructions.md` |
-| Cursor | `.cursor/rules/team-project-memory.mdc` |
-| Devin/Cascade-style repos | `.devin/rules/team-project-memory.md` |
+- `skills/team-project-memory/`
+- `skills/team-memory-search/`
+- `skills/team-memory-capture/`
+- `skills/team-memory-maintenance/`
+
+They are mirrored into:
+
+- `packages/team-project-memory-skill/skills/`
+- `plugins/team-project-memory/skills/`
 
 Rules:
 
-- Keep the canonical behavior in `skills/team-project-memory/SKILL.md`.
-- Keep every surface additive.
-- Never let one surface overwrite a repo-local instruction file with different meaning.
+- Make behavioral changes in the canonical root skills first.
+- Keep package and plugin mirrors identical to the canonical skills.
+- Never overwrite repository-local instructions such as `AGENTS.md`,
+  `CLAUDE.md`, or `.github/copilot-instructions.md`.
+- Keep retrieval read-only unless a write is explicitly requested.

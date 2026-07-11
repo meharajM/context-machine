@@ -1,0 +1,7 @@
+interface:
+  display_name: "Team Memory Capture"
+  short_description: "Save a verified reusable learning"
+  default_prompt: "Use $team-memory-capture to draft a compact reusable project learning."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Team Memory Maintenance"
+  short_description: "Set up and clean shared memory"
+  default_prompt: "Use $team-memory-maintenance to configure or maintain the shared memory store."
+
+policy:
+  allow_implicit_invocation: false
