@@ -1,3 +1,13 @@
+---
+name: contextengine
+description: Use the local-first ContextEngine MCP layer for shared project memory, append-only captures, reviewable context patches, team learnings, and legacy agent-loop compatibility. Use when agents need auditable cross-session context or MCP-backed memory tools.
+license: MIT
+metadata:
+  author: meharajM
+  version: "0.1.2"
+  repository: meharajM/context-machine
+---
+
 # ContextEngine MCP
 
 Local-first context layer for AI agents. Use it when work needs shared project memory, append-only captures, reviewable patch proposals, team session learnings, or legacy `agent-loop-mcp` compatibility.

@@ -13,6 +13,13 @@ Four token-efficient, git-backed Agent Skills that help developers and AI coding
 | `team-memory-capture` | Drafts compact verified reusable learnings | No |
 | `team-memory-maintenance` | Sets up and maintains the shared memory store | No |
 
+Direct skill pages:
+
+- [`team-project-memory`](https://skills.sh/meharajM/context-machine/team-project-memory)
+- [`team-memory-search`](https://skills.sh/meharajM/context-machine/team-memory-search)
+- [`team-memory-capture`](https://skills.sh/meharajM/context-machine/team-memory-capture)
+- [`team-memory-maintenance`](https://skills.sh/meharajM/context-machine/team-memory-maintenance)
+
 These skills follow the open [Agent Skills specification](https://agentskills.io/specification) and do not require the optional ContextEngine MCP server.
 
 ## Install
